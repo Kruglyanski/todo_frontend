@@ -1,0 +1,23 @@
+.tag {
+  display: flex;
+  color: #07293c;
+  padding: 12px;
+  border-radius: 6px;
+}
+
+.tagContainer {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.green {
+  background-color: green;
+}
+
+.yellow {
+  background-color: yellow;
+}
+
+.red {
+  background-color: red;
+}

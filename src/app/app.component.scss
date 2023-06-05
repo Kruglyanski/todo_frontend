@@ -1,0 +1,28 @@
+.appContainer {
+  max-width: 42rem;
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 100%;
+}
+
+.title {
+  text-align: center;
+  color: rgb(10, 29, 40);
+}
+
+.filter {
+  display: flex;
+  margin-left: auto;
+  margin-right: auto;
+  width: 300px;
+  height: 40px;
+  border: 2px solid rgb(86, 110, 174);
+  border-radius: 6px;
+  font-size: 20px;
+  margin-bottom: 24px;
+  &:focus {
+    outline: none;
+    border: 2px solid rgb(5, 72, 255);
+  }
+}

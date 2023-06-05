@@ -1,0 +1,12 @@
+<div class="tagContainer">
+  <div
+    class="tag"
+    [ngClass]="{
+      green: tag === ETag.LOW,
+      yellow: tag === ETag.MIDDLE,
+      red: tag === ETag.HIGH
+    }"
+  >
+    {{ tag }}
+  </div>
+</div>
