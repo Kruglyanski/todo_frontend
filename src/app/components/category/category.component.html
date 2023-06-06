@@ -1,5 +1,8 @@
 <div *ngIf="category.todos.length" class="category">
-  <h2>{{ category.title }}</h2>
+  <div class="header">
+    <h2>{{ category.title }}</h2>
+    <button class="button" (click)="deleteCategory()">Delete</button>
+  </div>
   <app-todo
     *ngFor="let todo of category.todos; trackBy: trackByFn"
     [todo]="todo"

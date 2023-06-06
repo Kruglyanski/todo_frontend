@@ -1,9 +1,18 @@
 .appContainer {
-  max-width: 42rem;
+  //max-width: 42rem;
   width: 100%;
   margin-left: auto;
   margin-right: auto;
   max-width: 100%;
+}
+.header {
+  display: flex;
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%;
+  justify-content: space-between;
+  padding-right: 40px;
+  padding-left: 40px;
 }
 
 .title {
@@ -13,40 +22,41 @@
 
 .filter {
   display: flex;
-  margin-left: auto;
-  margin-right: auto;
   width: 400px;
-  height: 40px;
-  border: 2px solid rgb(86, 110, 174);
+  height: 30px;
+  border: 1px solid rgb(86, 110, 174);
   border-radius: 6px;
-  font-size: 20px;
+  font-size: 14px;
   margin-bottom: 24px;
   &:focus {
     outline: none;
-    border: 2px solid rgb(5, 72, 255);
+    border: 1px solid rgb(5, 72, 255);
   }
 }
 
 .addTodoButton {
-  position: absolute;
-  top: 12px;
-  right: 20px;
   border-radius: 8px;
   background-color: green;
-  border: none;
-  padding: 12px;
-  font-size: 18px;
+  border: 1px solid rgb(3, 47, 3);
+  padding: 8px;
+  font-size: 14px;
   color: rgb(220, 226, 211);
 }
 
 .addCategoryButton {
-  position: absolute;
-  top: 12px;
-  right: 120px;
   border-radius: 8px;
-  background-color: yellow;
-  border: none;
-  padding: 12px;
-  font-size: 18px;
+  background-color: rgb(255, 242, 0);
+  border: 1px solid rgb(144, 154, 6);
+  padding: 8px;
+  font-size: 14px;
   color: rgb(14, 98, 163);
+}
+
+.removeTodosButton {
+  border-radius: 8px;
+  background-color: red;
+  border: 1px solid rgb(47, 5, 5);
+  padding: 8px;
+  font-size: 14px;
+  color: rgb(47, 5, 5);
 }

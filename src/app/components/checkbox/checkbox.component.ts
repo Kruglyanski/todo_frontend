@@ -1,5 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { TodosService } from '../../services/todos.service';
+import { ITodo } from '../../models/todo';
 
 @Component({
   selector: 'app-checkbox',
@@ -7,9 +9,13 @@ import { FormBuilder, FormGroup } from '@angular/forms';
   styleUrls: ['./checkbox.component.scss'],
 })
 export class CheckboxComponent implements OnInit {
+  @Input() todo: ITodo;
   checkboxForm: FormGroup;
 
-  constructor(private formBuilder: FormBuilder) {}
+  constructor(
+    private formBuilder: FormBuilder,
+    private todosService: TodosService
+  ) {}
 
   ngOnInit() {
     this.checkboxForm = this.formBuilder.group({
@@ -18,9 +24,14 @@ export class CheckboxComponent implements OnInit {
 
     this.checkboxForm
       .get('isChecked')
-      ?.valueChanges.subscribe((value: boolean) => {
-        console.log('Checkbox value:', value);
-        // Дополнительные действия при изменении состояния чекбокса
+      ?.valueChanges.subscribe((isChecked: boolean) => {
+        console.log('Checkbox value:', isChecked);
+        console.log('todo:', this.todo);
+        if (isChecked) {
+          this.todosService.selectTodo(this.todo);
+        } else {
+          this.todosService.unSelectTodo(this.todo);
+        }
       });
   }
 }

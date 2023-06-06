@@ -4,6 +4,7 @@ import { ICategory } from './models/category';
 import { Observable } from 'rxjs';
 import { ModalService } from './services/modal.service';
 import { TodosService } from './services/todos.service';
+import { EModalType } from './enums/modal-type';
 
 @Component({
   selector: 'app-root',
@@ -13,8 +14,8 @@ import { TodosService } from './services/todos.service';
 export class AppComponent implements OnInit {
   // title = 'angular todo';
   filterValue = '';
-  categories$: Observable<ICategory[]>;
-
+  //categories$: Observable<ICategory[]>;
+  EModalType = EModalType;
   constructor(
     public categoriesService: CategoriesService,
     public modalService: ModalService,
@@ -26,7 +27,10 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    //this.categories$ = this.categoriesService.getAll();
     this.categoriesService.getAll().subscribe();
+  }
+
+  deleteSelectedTodos() {
+    this.todoService.deleteMany().subscribe();
   }
 }

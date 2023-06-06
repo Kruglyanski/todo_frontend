@@ -10,7 +10,7 @@ import { ETag } from '../../enums/tag';
 export class TagComponent {
   @Input() tag: ITodo['tag'];
 
-  ETag: typeof ETag = ETag;
+  ETag = ETag;
 
   constructor() {}
 }

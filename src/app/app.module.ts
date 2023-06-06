@@ -11,6 +11,7 @@ import { CategoryComponent } from './components/category/category.component';
 import { FilterTodosPipe } from './pipes/filter-todos.pipe';
 import { ModalComponent } from './components/modal/modal.component';
 import { CreateTodoComponent } from './components/create-todo/create-todo.component';
+import { CreateCategoryComponent } from './components/create-category/create-category.component';
 
 @NgModule({
   declarations: [
@@ -22,6 +23,7 @@ import { CreateTodoComponent } from './components/create-todo/create-todo.compon
     FilterTodosPipe,
     ModalComponent,
     CreateTodoComponent,
+    CreateCategoryComponent,
   ],
   imports: [
     BrowserModule,

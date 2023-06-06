@@ -2,7 +2,9 @@ import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { TodosService } from '../../services/todos.service';
 import { ModalService } from '../../services/modal.service';
-import { CreateTodoDto } from '../../models/create-todo-dto';
+import { CreateTodoDto } from '../../models/dto/create-todo-dto';
+import { CategoriesService } from '../../services/categories.service';
+import { ETag } from '../../enums/tag';
 
 @Component({
   selector: 'app-create-todo',
@@ -10,22 +12,28 @@ import { CreateTodoDto } from '../../models/create-todo-dto';
   styleUrls: ['./create-todo.component.scss'],
 })
 export class CreateTodoComponent {
-  constructor(
-    private todosService: TodosService,
-    private modalService: ModalService
-  ) {}
   form = new FormGroup({
     title: new FormControl<string>('', [Validators.required]),
     description: new FormControl<string>(''),
+    categoryId: new FormControl<number>(
+      this.categoriesService.categories[0]?.id
+    ),
+    tag: new FormControl<ETag>(ETag.LOW),
   });
 
+  eTagArray = Object.values(ETag);
+
+  constructor(
+    private todosService: TodosService,
+    private modalService: ModalService,
+    public categoriesService: CategoriesService
+  ) {}
+
   onSubmit() {
-    this.todosService
-      .create({ ...this.form.value, categoryId: 6 } as CreateTodoDto)
-      .subscribe(() => {
-        this.modalService.hide();
-        console.log('Created todo!', this.form.value);
-      });
+    this.todosService.create(this.form.value as CreateTodoDto).subscribe(() => {
+      this.modalService.hide();
+      console.log('Created todo!', this.form.value);
+    });
   }
 
   get title() {

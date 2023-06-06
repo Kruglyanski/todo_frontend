@@ -18,5 +18,17 @@
       placeholder="Enter Todo Description"
     />
   </div>
-  <button class="button">Submit</button>
+  <select formControlName="categoryId" class="select">
+    <option
+      *ngFor="let category of categoriesService.categories"
+      [value]="category.id"
+      pl
+    >
+      {{ category.title }}
+    </option>
+  </select>
+  <select formControlName="tag" class="select">
+    <option *ngFor="let tag of eTagArray" [value]="tag">{{ tag }}</option>
+  </select>
+  <button class="button">Create todo</button>
 </form>

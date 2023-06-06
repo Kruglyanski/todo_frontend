@@ -1,4 +1,5 @@
 import { ETag } from '../enums/tag';
+import { ICategory } from './category';
 
 export interface ITodo {
   id: number;
@@ -7,7 +8,7 @@ export interface ITodo {
   tag: ETag;
   completed: boolean | null;
   userId: number;
-  categoryId: number;
+  category: Pick<ICategory, 'id' | 'title'>;
   createdAt: string;
   updatedAt: string;
 }

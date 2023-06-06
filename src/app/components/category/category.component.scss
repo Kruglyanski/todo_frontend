@@ -1,5 +1,5 @@
 .category {
-  border: rgb(18, 83, 121) dashed;
+  border: rgb(255, 255, 255) dashed;
   border-radius: 16px;
   width: 50%;
   margin-left: auto;
@@ -11,5 +11,20 @@
 }
 
 h2 {
-  color: rgb(10, 29, 40);
+  color: #dadada;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.button {
+  height: 32px;
+  border-radius: 8px;
+  background-color: red;
+  border: 1px solid rgb(165, 30, 30);
+  color: #05191b;
+  margin-right: 16px;
 }

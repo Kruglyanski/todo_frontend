@@ -1,8 +1,11 @@
 <div class="todoContainer">
   <div class="titleContainer">
-    <h2 class="">{{ todo.title }}</h2>
-    <app-checkbox></app-checkbox>
+    <h2 class="title">{{ todo.title }}</h2>
+    <app-checkbox [todo]="todo"></app-checkbox>
   </div>
   <p class="text">{{ todo.description }}</p>
-  <app-tag [tag]="todo.tag"></app-tag>
+  <div class="footer">
+    <app-tag [tag]="todo.tag"></app-tag>
+    <button class="button" (click)="deleteTodo()">Delete</button>
+  </div>
 </div>

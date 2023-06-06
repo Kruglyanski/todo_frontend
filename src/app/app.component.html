@@ -1,12 +1,36 @@
 <div class="appContainer">
   <!-- <h1 class="title">{{ title | titlecase }}</h1> -->
-  <input
-    type="text"
-    class="filter"
-    placeholder="Filter todos"
-    [(ngModel)]="filterValue"
-    onchange="setValue"
-  />
+  <div class="header">
+    <input
+      type="text"
+      class="filter"
+      placeholder="Filter todos"
+      [(ngModel)]="filterValue"
+      onchange="setValue"
+    />
+    <div class="buttonWrapper">
+      <button
+        *ngIf="todoService.selectedTodos.length"
+        class="removeTodosButton"
+        (click)="deleteSelectedTodos()"
+      >
+        - Todos
+      </button>
+      <button
+        class="addTodoButton"
+        (click)="modalService.show(EModalType.CREATE_TODO)"
+      >
+        + Todo
+      </button>
+      <button
+        class="addCategoryButton"
+        (click)="modalService.show(EModalType.CREATE_CATEGORY)"
+      >
+        + Category
+      </button>
+    </div>
+  </div>
+
   <div *ngIf="categoriesService.categories">
     <app-category
       *ngFor="
@@ -17,9 +41,14 @@
       [category]="category"
     ></app-category>
   </div>
+
   <app-modal *ngIf="modalService.isVisible$ | async"
-    ><app-create-todo></app-create-todo
-  ></app-modal>
-  <button class="addTodoButton" (click)="modalService.show()">+ Todo</button>
-  <button class="addCategoryButton">+ Category</button>
+    ><ng-container *ngIf="modalService.modalType === EModalType.CREATE_TODO">
+      <app-create-todo></app-create-todo>
+    </ng-container>
+    <ng-container *ngIf="modalService.modalType === EModalType.CREATE_CATEGORY">
+      <app-create-category></app-create-category>
+    </ng-container>
+  </app-modal>
 </div>
+<!-- *ngIf="todoService.selectedTodos.length" -->
