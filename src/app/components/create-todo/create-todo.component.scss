@@ -1,0 +1,37 @@
+.input {
+  width: 380px;
+  height: 36px;
+  border-radius: 4px;
+  border: 1px solid;
+  font-size: 18px;
+  display: flex;
+  &:focus {
+    border: 1px solid blue;
+  }
+}
+
+.button {
+  position: absolute;
+  bottom: 16px;
+  right: 16px;
+  background-color: #086df3;
+  outline: none;
+  border-radius: 4px;
+  padding: 8px;
+  border: none;
+  font-size: 18px;
+}
+
+.error {
+  color: red;
+}
+
+.inputWrapper {
+  margin-top: 24px;
+  margin-bottom: 16px;
+  margin-left: auto;
+  margin-right: auto;
+  display: flex;
+  width: 380px;
+  flex-direction: column;
+}

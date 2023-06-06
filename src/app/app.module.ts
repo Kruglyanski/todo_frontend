@@ -9,6 +9,8 @@ import { CheckboxComponent } from './components/checkbox/checkbox.component';
 import { HttpClientModule } from '@angular/common/http';
 import { CategoryComponent } from './components/category/category.component';
 import { FilterTodosPipe } from './pipes/filter-todos.pipe';
+import { ModalComponent } from './components/modal/modal.component';
+import { CreateTodoComponent } from './components/create-todo/create-todo.component';
 
 @NgModule({
   declarations: [
@@ -18,6 +20,8 @@ import { FilterTodosPipe } from './pipes/filter-todos.pipe';
     CheckboxComponent,
     CategoryComponent,
     FilterTodosPipe,
+    ModalComponent,
+    CreateTodoComponent,
   ],
   imports: [
     BrowserModule,

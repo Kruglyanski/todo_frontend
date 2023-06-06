@@ -15,7 +15,7 @@
   display: flex;
   margin-left: auto;
   margin-right: auto;
-  width: 300px;
+  width: 400px;
   height: 40px;
   border: 2px solid rgb(86, 110, 174);
   border-radius: 6px;
@@ -25,4 +25,28 @@
     outline: none;
     border: 2px solid rgb(5, 72, 255);
   }
+}
+
+.addTodoButton {
+  position: absolute;
+  top: 12px;
+  right: 20px;
+  border-radius: 8px;
+  background-color: green;
+  border: none;
+  padding: 12px;
+  font-size: 18px;
+  color: rgb(220, 226, 211);
+}
+
+.addCategoryButton {
+  position: absolute;
+  top: 12px;
+  right: 120px;
+  border-radius: 8px;
+  background-color: yellow;
+  border: none;
+  padding: 12px;
+  font-size: 18px;
+  color: rgb(14, 98, 163);
 }

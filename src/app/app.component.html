@@ -1,5 +1,5 @@
 <div class="appContainer">
-  <h1 class="title">{{ title | titlecase }}</h1>
+  <!-- <h1 class="title">{{ title | titlecase }}</h1> -->
   <input
     type="text"
     class="filter"
@@ -7,13 +7,19 @@
     [(ngModel)]="filterValue"
     onchange="setValue"
   />
-  <div *ngIf="categories$ | async as categories">
+  <div *ngIf="categoriesService.categories">
     <app-category
       *ngFor="
-        let category of categories | filterTodos : filterValue;
+        let category of categoriesService.categories
+          | filterTodos : filterValue;
         trackBy: trackByFn
       "
       [category]="category"
     ></app-category>
   </div>
+  <app-modal *ngIf="modalService.isVisible$ | async"
+    ><app-create-todo></app-create-todo
+  ></app-modal>
+  <button class="addTodoButton" (click)="modalService.show()">+ Todo</button>
+  <button class="addCategoryButton">+ Category</button>
 </div>

@@ -1,0 +1,22 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <div class="inputWrapper">
+    <input
+      type="text"
+      class="input"
+      formControlName="title"
+      placeholder="Enter Todo Title"
+    />
+    <div class="error" *ngIf="title.errors?.required && title.touched">
+      Title is required!!!
+    </div>
+  </div>
+  <div class="inputWrapper">
+    <input
+      type="text"
+      class="input"
+      formControlName="description"
+      placeholder="Enter Todo Description"
+    />
+  </div>
+  <button class="button">Submit</button>
+</form>
