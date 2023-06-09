@@ -1,51 +1,51 @@
-.todoContainer {
+.todo {
   padding: 8px;
   border-radius: 8px;
   flex-direction: column;
   margin-bottom: 18px;
   background-color: #889296;
   color: rgb(31, 56, 71);
-}
 
-.text {
-  font-size: 12px;
-}
+  &__text {
+    font-size: 12px;
+  }
 
-.titleContainer {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-}
+  &__titleContainer {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
 
-.title {
-  padding: 0;
-  margin: 0;
-}
+  &__title {
+    padding: 0;
+    margin: 0;
+  }
 
-.text_lineTrought {
-  color: rgb(112, 126, 135);
-  text-decoration: line-through;
-}
+  &__text_lineTrought {
+    color: rgb(112, 126, 135);
+    text-decoration: line-through;
+  }
 
-.button {
-  border-radius: 4px;
-  background-color: rgb(31, 56, 71);
-  border: 1px solid rgb(64, 80, 77);
-  padding: 4px;
-  font-size: 14px;
-  padding-left: 8px;
-  padding-right: 8px;
-  color: rgb(193, 212, 208);
-  margin-left: 4px;
-  margin-right: 4px;
-}
+  &__button {
+    border-radius: 4px;
+    background-color: rgb(31, 56, 71);
+    border: 1px solid rgb(64, 80, 77);
+    padding: 4px;
+    font-size: 14px;
+    padding-left: 8px;
+    padding-right: 8px;
+    color: rgb(193, 212, 208);
+    margin-left: 4px;
+    margin-right: 4px;
+  }
 
-.deleteButton {
-  background-color: rgb(123, 5, 5);
-}
+  &__deleteButton {
+    background-color: rgb(123, 5, 5);
+  }
 
-.footer {
-  display: flex;
-  justify-content: space-between;
+  &__footer {
+    display: flex;
+    justify-content: space-between;
+  }
 }

@@ -1,14 +1,14 @@
-<form [formGroup]="form" (ngSubmit)="onSubmit()">
-  <div class="inputWrapper">
+<form [formGroup]="form" (ngSubmit)="onSubmit()" class="form">
+  <div class="form__inputWrapper">
     <input
       type="text"
-      class="input"
+      class="form__input"
       formControlName="title"
       placeholder="Enter Category Title"
     />
-    <div class="error" *ngIf="title.errors?.required && title.touched">
+    <div class="form__error" *ngIf="title.errors?.required && title.touched">
       Title is required!!!
     </div>
   </div>
-  <button class="button">Create category</button>
+  <button class="form__button">Create category</button>
 </form>

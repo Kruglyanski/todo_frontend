@@ -1,0 +1,9 @@
+<div *ngIf="categories$ | async as categories">
+  <app-category
+    *ngFor="
+      let category of categories | filterTodos : todoService.filterValue;
+      trackBy: trackByFn
+    "
+    [category]="category"
+  ></app-category>
+</div>

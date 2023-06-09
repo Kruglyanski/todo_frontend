@@ -1,1 +1,30 @@
-<p>header works!</p>
+<div class="header">
+  <input
+    type="text"
+    class="header__filter"
+    placeholder="Filter todos"
+    [(ngModel)]="todoService.filterValue"
+  />
+  <button
+    *ngIf="todoService.selectedTodos.length"
+    class="header__button header__removeTodosButton"
+    (click)="deleteSelectedTodos()"
+  >
+    - Todos
+  </button>
+  <div *ngIf="!todoService.selectedTodos.length">
+    <button
+      class="header__button"
+      (click)="modalService.show(EModalType.CREATE_TODO)"
+    >
+      + Todo
+    </button>
+    <button
+      class="header__button"
+      (click)="modalService.show(EModalType.CREATE_CATEGORY)"
+    >
+      + Category
+    </button>
+    <button class="header__button" (click)="logout()">Logout</button>
+  </div>
+</div>

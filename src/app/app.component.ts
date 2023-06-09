@@ -1,4 +1,9 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { CategoriesService } from './services/categories.service';
 import { ICategory } from './models/category';
 import { BehaviorSubject, Observable } from 'rxjs';
@@ -8,6 +13,7 @@ import { EModalType } from './enums/modal-type';
 import { AuthService } from './services/auth.service';
 import { ApiService } from './api.service';
 import { BaseComponent } from './components/base-component/base.component';
+import { HeaderComponent } from './components/header/header.component';
 
 @Component({
   selector: 'app-root',
@@ -16,12 +22,10 @@ import { BaseComponent } from './components/base-component/base.component';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AppComponent extends BaseComponent implements OnInit {
-  title = 'Welcome to todo app';
-  token = '';
-  filterValue = '';
-  //categories$: Observable<ICategory[]>;
   EModalType = EModalType;
-  categories$ = new BehaviorSubject<ICategory[] | null>(null);
+
+  // @ViewChild(HeaderComponent) headerComponent: HeaderComponent;
+
   constructor(
     public categoriesService: CategoriesService,
     public modalService: ModalService,
@@ -32,36 +36,11 @@ export class AppComponent extends BaseComponent implements OnInit {
     super(AppComponent.name);
   }
 
-  trackByFn(_: number, item: ICategory): ICategory['id'] {
-    return item.id;
-  }
-
   ngOnInit(): void {
     const token = localStorage.getItem('token');
 
     if (token) {
       this.apiService.token$.next(token);
     }
-
-    this.apiService.token$.subscribe((token) => {
-      this.token = token;
-      if (this.token) {
-        this.categoriesService.getAll();
-      }
-    });
-
-    this.categoriesService.categories$.subscribe((categories) => {
-      console.log('appComponentnext', categories);
-      this.categories$.next(categories);
-    });
-  }
-
-  deleteSelectedTodos() {
-    this.todoService.deleteMany();
-  }
-
-  logout() {
-    this.apiService.token$.next('');
-    localStorage.removeItem('token');
   }
 }

@@ -15,6 +15,9 @@ import { CreateCategoryComponent } from './components/create-category/create-cat
 import { LoginComponent } from './components/login/login.component';
 import { RegisterComponent } from './components/register/register.component';
 import { HeaderComponent } from './components/header/header.component';
+import { ModalContentComponent } from './components/modal-content/modal-content.component';
+import { CategoriesListComponent } from './components/categories-list/categories-list.component';
+import { AuthComponent } from './components/auth/auth.component';
 //import { TokenInterceptor } from './services/token.interceptor';
 
 @NgModule({
@@ -31,6 +34,9 @@ import { HeaderComponent } from './components/header/header.component';
     LoginComponent,
     RegisterComponent,
     HeaderComponent,
+    ModalContentComponent,
+    CategoriesListComponent,
+    AuthComponent,
   ],
   imports: [
     BrowserModule,

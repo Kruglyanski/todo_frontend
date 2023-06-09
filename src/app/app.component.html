@@ -1,72 +1,11 @@
 <div class="appContainer">
   <div *ngIf="apiService.token$ | async">
-    <div class="header">
-      <input
-        type="text"
-        class="filter"
-        placeholder="Filter todos"
-        [(ngModel)]="filterValue"
-        onchange="setValue"
-      /><button
-        *ngIf="todoService.selectedTodos.length"
-        class="button removeTodosButton"
-        (click)="deleteSelectedTodos()"
-      >
-        - Todos
-      </button>
-      <div *ngIf="!todoService.selectedTodos.length" class="buttonWrapper">
-        <button
-          class="button"
-          (click)="modalService.show(EModalType.CREATE_TODO)"
-        >
-          + Todo
-        </button>
-        <button
-          class="button"
-          (click)="modalService.show(EModalType.CREATE_CATEGORY)"
-        >
-          + Category
-        </button>
-        <button class="button" (click)="logout()">Logout</button>
-      </div>
-    </div>
-    <div *ngIf="categories$ | async as categories">
-      <app-category
-        *ngFor="
-          let category of categories | filterTodos : filterValue;
-          trackBy: trackByFn
-        "
-        [category]="category"
-      ></app-category>
-    </div>
+    <app-header></app-header>
+    <app-categories-list></app-categories-list>
   </div>
-  <div *ngIf="!(apiService.token$ | async)">
-    <h1 class="title">{{ title | titlecase }}</h1>
-    <div class="authButtonsWrapper">
-      <button
-        class="registerButton"
-        (click)="modalService.show(EModalType.REGISTER)"
-      >
-        Sign up
-      </button>
-      <button class="loginButton" (click)="modalService.show(EModalType.LOGIN)">
-        Sign in
-      </button>
-    </div>
-  </div>
-  <app-modal *ngIf="modalService.isVisible$ | async"
-    ><ng-container *ngIf="modalService.modalType === EModalType.CREATE_TODO">
-      <app-create-todo></app-create-todo>
-    </ng-container>
-    <ng-container *ngIf="modalService.modalType === EModalType.CREATE_CATEGORY">
-      <app-create-category></app-create-category>
-    </ng-container>
-    <ng-container *ngIf="modalService.modalType === EModalType.REGISTER">
-      <app-register></app-register>
-    </ng-container>
-    <ng-container *ngIf="modalService.modalType === EModalType.LOGIN">
-      <app-login></app-login>
-    </ng-container>
+  <app-auth></app-auth>
+  <app-modal *ngIf="modalService.isVisible$ | async">
+    <app-modal-content></app-modal-content>
   </app-modal>
 </div>
 <!-- *ngIf="todoService.selectedTodos.length" -->

@@ -1,23 +1,26 @@
-<form [formGroup]="form" (ngSubmit)="onSubmit()">
-  <div class="inputWrapper">
+<form class="form" class="[formGroup]" ="form" (ngSubmit)="onSubmit()">
+  <div class="form__inputWrapper">
     <input
       type="text"
-      class="input"
+      class="form__input"
       formControlName="email"
       placeholder="Enter Email"
     />
-    <div class="error" *ngIf="email.errors?.required && email.touched">
+    <div class="form__error" *ngIf="email.errors?.required && email.touched">
       Email is required!!!
     </div>
   </div>
-  <div class="inputWrapper">
+  <div class="form__inputWrapper">
     <input
       type="password"
-      class="input"
+      class="form__input"
       formControlName="password"
       placeholder="Enter Password"
     />
-    <div class="error" *ngIf="password.errors?.required && password.touched">
+    <div
+      class="form__error"
+      *ngIf="password.errors?.required && password.touched"
+    >
       Password is required!!!
     </div>
   </div>
@@ -34,5 +37,5 @@
       </option>
     </select> -->
 
-  <button class="button">Register</button>
+  <button class="form__button">Register</button>
 </form>

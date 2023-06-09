@@ -1,7 +1,7 @@
-<div *ngIf="todo$ | async as todo" class="todoContainer">
-  <div class="titleContainer">
+<div class="todo" *ngIf="todo$ | async as todo">
+  <div class="todo__titleContainer">
     <h2
-      class="title"
+      class="todo__title"
       [ngClass]="{
       text_lineTrought: todo.completed,
     }"
@@ -10,14 +10,19 @@
     </h2>
     <app-checkbox [todo]="todo"></app-checkbox>
   </div>
-  <p class="text">{{ todo.description }}</p>
-  <div class="footer">
+  <p class="todo__text">{{ todo.description }}</p>
+  <div class="todo__footer">
     <app-tag [tag]="todo.tag"></app-tag>
     <div>
-      <button class="button completeButton" (click)="completeTodo()">
+      <button
+        class="todo__button todo__completeButton"
+        (click)="completeTodo()"
+      >
         {{ todo.completed ? "Incomplete" : "Complete" }}
       </button>
-      <button class="button deleteButton" (click)="deleteTodo()">- Todo</button>
+      <button class="todo__button todo__deleteButton" (click)="deleteTodo()">
+        - Todo
+      </button>
     </div>
   </div>
 </div>

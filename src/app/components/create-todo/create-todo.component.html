@@ -1,24 +1,24 @@
-<form [formGroup]="form" (ngSubmit)="onSubmit()">
-  <div class="inputWrapper">
+<form class="form" [formGroup]="form" (ngSubmit)="onSubmit()">
+  <div class="form__inputWrapper">
     <input
       type="text"
-      class="input"
+      class="form__input"
       formControlName="title"
       placeholder="Enter Todo Title"
     />
-    <div class="error" *ngIf="title.errors?.required && title.touched">
+    <div class="form__error" *ngIf="title.errors?.required && title.touched">
       Title is required!!!
     </div>
   </div>
-  <div class="inputWrapper">
+  <div class="form__inputWrapper">
     <input
       type="text"
-      class="input"
+      class="form__input"
       formControlName="description"
       placeholder="Enter Todo Description"
     />
   </div>
-  <select formControlName="categoryId" class="select">
+  <select formControlName="categoryId" class="form__select">
     <option
       *ngFor="let category of categoriesService.categories$ | async"
       [value]="category.id"
@@ -26,8 +26,8 @@
       {{ category.title }}
     </option>
   </select>
-  <select formControlName="tag" class="select">
+  <select formControlName="tag" class="form__select">
     <option *ngFor="let tag of eTagArray" [value]="tag">{{ tag }}</option>
   </select>
-  <button class="button">Create todo</button>
+  <button class="form__button">Create todo</button>
 </form>

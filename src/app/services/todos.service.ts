@@ -12,6 +12,7 @@ import { IUpdateTodoDto } from '../models/dto/update-todo.dto';
 })
 export class TodosService {
   selectedTodos: ITodo[] = [];
+  filterValue: string;
 
   constructor(
     private categoriesService: CategoriesService,

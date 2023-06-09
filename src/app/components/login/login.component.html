@@ -1,26 +1,29 @@
-<form [formGroup]="form" (ngSubmit)="onSubmit()">
-  <div class="inputWrapper">
+<form class="form" [formGroup]="form" (ngSubmit)="onSubmit()">
+  <div class="form__inputWrapper">
     <input
       type="text"
-      class="input"
+      class="form__input"
       formControlName="email"
       placeholder="Enter Email"
     />
-    <div class="error" *ngIf="email.errors?.required && email.touched">
+    <div class="form__error" *ngIf="email.errors?.required && email.touched">
       Email is required!!!
     </div>
   </div>
-  <div class="inputWrapper">
+  <div class="form__inputWrapper">
     <input
       type="password"
-      class="input"
+      class="form__input"
       formControlName="password"
       placeholder="Enter Password"
     />
-    <div class="error" *ngIf="password.errors?.required && password.touched">
+    <div
+      class="form__error"
+      *ngIf="password.errors?.required && password.touched"
+    >
       Password is required!!!
     </div>
   </div>
 
-  <button class="button">Login</button>
+  <button class="form__button">Login</button>
 </form>

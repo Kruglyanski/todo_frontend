@@ -1,10 +1,14 @@
 <div *ngIf="category$ | async as category" class="category">
-  <div class="header">
-    <div class="titleWrapper">
-      <p class="open" (click)="openCategory()">{{ isOpen ? "-" : "+" }}</p>
-      <h2>{{ category.title }}</h2>
+  <div class="category__header">
+    <div class="category__titleWrapper">
+      <p class="category__open" (click)="openCategory()">
+        {{ isOpen ? "-" : "+" }}
+      </p>
+      <h2 class="category__title">{{ category.title }}</h2>
     </div>
-    <button class="button" (click)="deleteCategory()">- Category</button>
+    <button class="category__deleteButton" (click)="deleteCategory()">
+      - Category
+    </button>
   </div>
   <div *ngIf="isOpen">
     <app-todo
@@ -13,4 +17,3 @@
     ></app-todo>
   </div>
 </div>
-<!-- *ngIf="category.todos.length" -->
