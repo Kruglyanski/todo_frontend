@@ -1,47 +1,58 @@
 <div class="appContainer">
-  <!-- <h1 class="title">{{ title | titlecase }}</h1> -->
-  <div class="header">
-    <input
-      type="text"
-      class="filter"
-      placeholder="Filter todos"
-      [(ngModel)]="filterValue"
-      onchange="setValue"
-    />
-    <div class="buttonWrapper">
+  <div *ngIf="apiService.token$ | async">
+    <div class="header">
+      <input
+        type="text"
+        class="filter"
+        placeholder="Filter todos"
+        [(ngModel)]="filterValue"
+        onchange="setValue"
+      />
+      <div class="buttonWrapper">
+        <button
+          *ngIf="todoService.selectedTodos.length"
+          class="removeTodosButton"
+          (click)="deleteSelectedTodos()"
+        >
+          - Todos
+        </button>
+        <button
+          class="addTodoButton"
+          (click)="modalService.show(EModalType.CREATE_TODO)"
+        >
+          + Todo
+        </button>
+        <button
+          class="addCategoryButton"
+          (click)="modalService.show(EModalType.CREATE_CATEGORY)"
+        >
+          + Category
+        </button>
+        <button class="logoutButton" (click)="logout()">Logout</button>
+      </div>
+    </div>
+
+    <div *ngIf="categoriesService.categories$ | async as categories">
+      <app-category
+        *ngFor="let category of categories; trackBy: trackByFn"
+        [category]="category"
+      ></app-category>
+    </div>
+  </div>
+  <div *ngIf="!(apiService.token$ | async)">
+    <h1 class="title">{{ title | titlecase }}</h1>
+    <div class="authButtonsWrapper">
       <button
-        *ngIf="todoService.selectedTodos.length"
-        class="removeTodosButton"
-        (click)="deleteSelectedTodos()"
+        class="registerButton"
+        (click)="modalService.show(EModalType.REGISTER)"
       >
-        - Todos
+        Sign up
       </button>
-      <button
-        class="addTodoButton"
-        (click)="modalService.show(EModalType.CREATE_TODO)"
-      >
-        + Todo
-      </button>
-      <button
-        class="addCategoryButton"
-        (click)="modalService.show(EModalType.CREATE_CATEGORY)"
-      >
-        + Category
+      <button class="loginButton" (click)="modalService.show(EModalType.LOGIN)">
+        Sign in
       </button>
     </div>
   </div>
-
-  <div *ngIf="categoriesService.categories">
-    <app-category
-      *ngFor="
-        let category of categoriesService.categories
-          | filterTodos : filterValue;
-        trackBy: trackByFn
-      "
-      [category]="category"
-    ></app-category>
-  </div>
-
   <app-modal *ngIf="modalService.isVisible$ | async"
     ><ng-container *ngIf="modalService.modalType === EModalType.CREATE_TODO">
       <app-create-todo></app-create-todo>
@@ -49,6 +60,13 @@
     <ng-container *ngIf="modalService.modalType === EModalType.CREATE_CATEGORY">
       <app-create-category></app-create-category>
     </ng-container>
+    <ng-container *ngIf="modalService.modalType === EModalType.REGISTER">
+      <app-register></app-register>
+    </ng-container>
+    <ng-container *ngIf="modalService.modalType === EModalType.LOGIN">
+      <app-login></app-login>
+    </ng-container>
   </app-modal>
 </div>
 <!-- *ngIf="todoService.selectedTodos.length" -->
+<!-- | filterTodos : filterValue -->

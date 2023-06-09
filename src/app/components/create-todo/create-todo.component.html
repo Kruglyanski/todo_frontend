@@ -20,9 +20,8 @@
   </div>
   <select formControlName="categoryId" class="select">
     <option
-      *ngFor="let category of categoriesService.categories"
+      *ngFor="let category of categoriesService.categories$ | async"
       [value]="category.id"
-      pl
     >
       {{ category.title }}
     </option>

@@ -23,7 +23,20 @@
   margin: 0;
 }
 
-.button {
+.text_lineTrought {
+  color: rgb(112, 126, 135);
+  text-decoration: line-through;
+}
+
+.completeButton {
+  height: 32px;
+  border-radius: 8px;
+  background-color: rgb(5, 92, 192);
+  border: 1px solid rgb(17, 9, 81);
+  color: rgb(1, 31, 53);
+}
+
+.deleteButton {
   height: 32px;
   border-radius: 8px;
   background-color: red;

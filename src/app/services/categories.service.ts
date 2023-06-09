@@ -1,44 +1,49 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable, tap } from 'rxjs';
+import { BehaviorSubject, Subscription, take } from 'rxjs';
 import { ICategory } from '../models/category';
-import { CreateCategoryDto } from '../models/dto/create-category-dto';
+import { ICreateCategoryDto } from '../models/dto/create-category.dto';
+import { ApiService } from '../api.service';
+import { ModalService } from './modal.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class CategoriesService {
-  categories: ICategory[] = [];
-  constructor(private httpClient: HttpClient) {}
+  categories$ = new BehaviorSubject<ICategory[]>([]);
 
-  getAll(): Observable<ICategory[]> {
-    return this.httpClient
-      .get<ICategory[]>('http://localhost:5000/categories')
-      .pipe(tap((categories) => (this.categories = categories)));
+  constructor(
+    private modalService: ModalService,
+    private apiService: ApiService
+  ) {}
+
+  getAll(): Subscription {
+    return this.apiService
+      .getAllCategories()
+      .pipe(take(1))
+      .subscribe((categories) => this.categories$.next(categories));
   }
 
-  create(categoryDto: CreateCategoryDto): Observable<ICategory> {
-    return this.httpClient
-      .post<ICategory>('http://localhost:5000/categories', {
-        ...categoryDto,
-        userId: 5,
-      })
-      .pipe(
-        tap((category) => {
-          this.categories = [...this.categories, { ...category, todos: [] }]; //??????????
-        })
-      );
+  create(categoryDto: ICreateCategoryDto): Subscription {
+    return this.apiService
+      .createCategory(categoryDto)
+      .pipe()
+      .subscribe((category) => {
+        const updatedCategories = [...this.categories$.getValue(), category];
+        this.categories$.next(updatedCategories);
+        this.modalService.hide();
+      });
   }
 
-  delete(category: ICategory): Observable<ICategory> {
-    return this.httpClient
-      .delete<ICategory>(`http://localhost:5000/categories/${category.id}`)
-      .pipe(
-        tap(() => {
-          this.categories = this.categories.filter(
-            (cat) => cat.id !== category.id
-          );
-        })
-      );
+  delete(categoryId: ICategory['id']): Subscription {
+    return this.apiService
+      .deleteCategory(categoryId)
+      .pipe()
+      .subscribe((category) => {
+        const updatedCategories = this.categories$
+          .getValue()
+          .filter((cat) => cat.id !== category.id);
+        this.categories$.next(updatedCategories);
+        this.modalService.hide();
+      });
   }
 }

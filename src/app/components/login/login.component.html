@@ -1,0 +1,26 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <div class="inputWrapper">
+    <input
+      type="text"
+      class="input"
+      formControlName="email"
+      placeholder="Enter Email"
+    />
+    <div class="error" *ngIf="email.errors?.required && email.touched">
+      Email is required!!!
+    </div>
+  </div>
+  <div class="inputWrapper">
+    <input
+      type="password"
+      class="input"
+      formControlName="password"
+      placeholder="Enter Password"
+    />
+    <div class="error" *ngIf="password.errors?.required && password.touched">
+      Password is required!!!
+    </div>
+  </div>
+
+  <button class="button">Login</button>
+</form>

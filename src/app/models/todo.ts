@@ -8,7 +8,8 @@ export interface ITodo {
   tag: ETag;
   completed: boolean | null;
   userId: number;
-  category: Pick<ICategory, 'id' | 'title'>;
+  category?: Pick<ICategory, 'id' | 'title'>;
   createdAt: string;
   updatedAt: string;
+  categoryId: number;
 }
