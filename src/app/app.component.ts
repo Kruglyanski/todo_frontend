@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { CategoriesService } from './services/categories.service';
 import { ICategory } from './models/category';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { ModalService } from './services/modal.service';
 import { TodosService } from './services/todos.service';
 import { EModalType } from './enums/modal-type';
@@ -21,6 +21,7 @@ export class AppComponent extends BaseComponent implements OnInit {
   filterValue = '';
   //categories$: Observable<ICategory[]>;
   EModalType = EModalType;
+  categories$ = new BehaviorSubject<ICategory[] | null>(null);
   constructor(
     public categoriesService: CategoriesService,
     public modalService: ModalService,
@@ -47,6 +48,11 @@ export class AppComponent extends BaseComponent implements OnInit {
       if (this.token) {
         this.categoriesService.getAll();
       }
+    });
+
+    this.categoriesService.categories$.subscribe((categories) => {
+      console.log('appComponentnext', categories);
+      this.categories$.next(categories);
     });
   }
 

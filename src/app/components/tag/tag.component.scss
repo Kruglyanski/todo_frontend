@@ -1,9 +1,10 @@
 .tag {
   display: flex;
   text-align: center;
-  margin-top: 12px;
-  font-size: 20px;
-  font-weight: 900;
+  font-size: 16px;
+  font-weight: 700;
+  border-radius: 4px;
+  padding: 2px;
 }
 
 .tagContainer {
@@ -12,13 +13,16 @@
 }
 
 .green {
-  color: green;
+  color: rgb(0, 124, 0);
+  border: rgb(0, 124, 0) solid;
 }
 
 .orange {
   color: rgb(226, 131, 42);
+  border: rgb(226, 131, 42) solid;
 }
 
 .red {
   color: red;
+  border: red solid;
 }

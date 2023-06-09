@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { TodosService } from '../../services/todos.service';
 import { ModalService } from '../../services/modal.service';
@@ -11,6 +11,7 @@ import { BaseComponent } from '../base-component/base.component';
   selector: 'app-create-todo',
   templateUrl: './create-todo.component.html',
   styleUrls: ['./create-todo.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CreateTodoComponent extends BaseComponent {
   form = new FormGroup({

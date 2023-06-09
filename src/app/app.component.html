@@ -7,34 +7,35 @@
         placeholder="Filter todos"
         [(ngModel)]="filterValue"
         onchange="setValue"
-      />
-      <div class="buttonWrapper">
+      /><button
+        *ngIf="todoService.selectedTodos.length"
+        class="button removeTodosButton"
+        (click)="deleteSelectedTodos()"
+      >
+        - Todos
+      </button>
+      <div *ngIf="!todoService.selectedTodos.length" class="buttonWrapper">
         <button
-          *ngIf="todoService.selectedTodos.length"
-          class="removeTodosButton"
-          (click)="deleteSelectedTodos()"
-        >
-          - Todos
-        </button>
-        <button
-          class="addTodoButton"
+          class="button"
           (click)="modalService.show(EModalType.CREATE_TODO)"
         >
           + Todo
         </button>
         <button
-          class="addCategoryButton"
+          class="button"
           (click)="modalService.show(EModalType.CREATE_CATEGORY)"
         >
           + Category
         </button>
-        <button class="logoutButton" (click)="logout()">Logout</button>
+        <button class="button" (click)="logout()">Logout</button>
       </div>
     </div>
-
-    <div *ngIf="categoriesService.categories$ | async as categories">
+    <div *ngIf="categories$ | async as categories">
       <app-category
-        *ngFor="let category of categories; trackBy: trackByFn"
+        *ngFor="
+          let category of categories | filterTodos : filterValue;
+          trackBy: trackByFn
+        "
         [category]="category"
       ></app-category>
     </div>
@@ -69,4 +70,3 @@
   </app-modal>
 </div>
 <!-- *ngIf="todoService.selectedTodos.length" -->
-<!-- | filterTodos : filterValue -->

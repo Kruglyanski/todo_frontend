@@ -26,7 +26,7 @@ export class CategoriesService {
   create(categoryDto: ICreateCategoryDto): Subscription {
     return this.apiService
       .createCategory(categoryDto)
-      .pipe()
+      .pipe(take(1))
       .subscribe((category) => {
         const updatedCategories = [...this.categories$.getValue(), category];
         this.categories$.next(updatedCategories);
@@ -37,7 +37,7 @@ export class CategoriesService {
   delete(categoryId: ICategory['id']): Subscription {
     return this.apiService
       .deleteCategory(categoryId)
-      .pipe()
+      .pipe(take(1))
       .subscribe((category) => {
         const updatedCategories = this.categories$
           .getValue()

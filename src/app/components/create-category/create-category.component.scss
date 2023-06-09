@@ -1,9 +1,9 @@
 .input {
   width: 380px;
-  height: 36px;
+  height: 22px;
   border-radius: 4px;
   border: 1px solid;
-  font-size: 18px;
+  font-size: 14px;
   display: flex;
   &:focus {
     border: 1px solid blue;
@@ -11,14 +11,26 @@
 }
 
 .button {
-  background-color: #086df3;
-  outline: none;
   border-radius: 4px;
-  padding: 8px;
-  border: none;
-  font-size: 18px;
-  margin-left: 6px;
+  background-color: rgb(31, 56, 71);
+  border: 1px solid rgb(64, 80, 77);
+  padding: 4px;
+  font-size: 14px;
+  padding-left: 8px;
+  padding-right: 8px;
+  color: rgb(193, 212, 208);
+  margin-left: 4px;
+  margin-right: 4px;
 }
+// .button {
+//   background-color: #086df3;
+//   outline: none;
+//   border-radius: 4px;
+//   padding: 8px;
+//   border: none;
+//   font-size: 18px;
+//   margin-left: 6px;
+// }
 
 .error {
   color: red;

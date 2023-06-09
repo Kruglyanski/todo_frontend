@@ -13,7 +13,7 @@ export class AuthService {
   register(userDto: IUserDto): Subscription {
     return this.apiService
       .register(userDto)
-      .pipe()
+      .pipe(take(1))
       .subscribe((resp) => {
         this.apiService.token$.next(resp.token);
         localStorage.setItem('token', resp.token);
@@ -23,7 +23,7 @@ export class AuthService {
   login(userDto: IUserDto): Subscription {
     return this.apiService
       .login(userDto)
-      .pipe()
+      .pipe(take(1))
       .subscribe((resp) => {
         this.apiService.token$.next(resp.token);
         localStorage.setItem('token', resp.token);

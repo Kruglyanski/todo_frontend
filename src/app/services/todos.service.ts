@@ -41,29 +41,34 @@ export class TodosService {
           ...this.categoriesService.categories$.getValue(),
         ].map((cat) => {
           if (cat.id === todo.categoryId) {
-            const index = cat.todos.findIndex((t) => t.id === todo.id);
+            const newCat = { ...cat };
+            const index = newCat.todos.findIndex((t) => t.id === todo.id);
 
             if (index !== -1) {
-              cat.todos.splice(index, 1, todo);
+              newCat.todos.splice(index, 1, todo);
             }
+            return newCat;
           }
+
           return cat;
         });
-        console.log('asd update categories$.next');
+        console.log('asd update categories$.next', updatedCategories);
         this.categoriesService.categories$.next(updatedCategories);
       });
   }
 
   create(todoDto: ICreateTodoDto): Subscription {
     return this.apiService.createTodo(todoDto).subscribe((todo) => {
-      const updatedCategories = this.categoriesService.categories$
-        .getValue()
-        .map((category) => {
-          if (category.id === todo.category?.id) {
-            category.todos.push(todo);
-          }
-          return category;
-        });
+      const updatedCategories = [
+        ...this.categoriesService.categories$.getValue(),
+      ].map((category) => {
+        const newCategory = { ...category }; ////???????????????/
+        if (category.id === todo.category?.id) {
+          newCategory.todos.push(todo);
+          return newCategory;
+        }
+        return category;
+      });
       console.log('asd create categories$.next');
       this.categoriesService.categories$.next(updatedCategories);
     });
@@ -76,21 +81,28 @@ export class TodosService {
       .deleteTodos(queryIds)
       .pipe()
       .subscribe((deletedTodos) => {
-        const newCategories = [
-          ...this.categoriesService.categories$.getValue(),
-        ].reduce<ICategory[]>((acc, cat) => {
-          deletedTodos.forEach((todo) => {
-            if (cat.id === todo.categoryId) {
-              const index = cat.todos.findIndex((t) => t.id === todo.id);
+        const deletedTodosCategoryIds = deletedTodos.map((t) => t.categoryId);
+        const newCategories = this.categoriesService.categories$
+          .getValue()
+          .reduce<ICategory[]>((acc, cat) => {
+            if (deletedTodosCategoryIds.includes(cat.id)) {
+              const newCat = { ...cat };
+              deletedTodos.forEach((todo) => {
+                if (newCat.id === todo.categoryId) {
+                  const index = newCat.todos.findIndex((t) => t.id === todo.id);
 
-              if (index !== -1) {
-                cat.todos.splice(index, 1);
-              }
+                  if (index !== -1) {
+                    newCat.todos.splice(index, 1);
+                  }
+                }
+              });
+              acc.push(newCat);
+            } else {
+              acc.push(cat);
             }
-          });
-          acc.push({ ...cat });
-          return acc;
-        }, []);
+
+            return acc;
+          }, []);
 
         this.categoriesService.categories$.next(newCategories);
 

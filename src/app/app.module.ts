@@ -14,6 +14,7 @@ import { CreateTodoComponent } from './components/create-todo/create-todo.compon
 import { CreateCategoryComponent } from './components/create-category/create-category.component';
 import { LoginComponent } from './components/login/login.component';
 import { RegisterComponent } from './components/register/register.component';
+import { HeaderComponent } from './components/header/header.component';
 //import { TokenInterceptor } from './services/token.interceptor';
 
 @NgModule({
@@ -29,6 +30,7 @@ import { RegisterComponent } from './components/register/register.component';
     CreateCategoryComponent,
     LoginComponent,
     RegisterComponent,
+    HeaderComponent,
   ],
   imports: [
     BrowserModule,

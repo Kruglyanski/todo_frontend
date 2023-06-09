@@ -1,11 +1,16 @@
 <div *ngIf="category$ | async as category" class="category">
   <div class="header">
-    <h2>{{ category.title }}</h2>
-    <button class="button" (click)="deleteCategory()">Delete</button>
+    <div class="titleWrapper">
+      <p class="open" (click)="openCategory()">{{ isOpen ? "-" : "+" }}</p>
+      <h2>{{ category.title }}</h2>
+    </div>
+    <button class="button" (click)="deleteCategory()">- Category</button>
   </div>
-  <app-todo
-    *ngFor="let todo of category.todos; trackBy: trackByFn"
-    [todo]="todo"
-  ></app-todo>
+  <div *ngIf="isOpen">
+    <app-todo
+      *ngFor="let todo of category.todos; trackBy: trackByFn"
+      [todo]="todo"
+    ></app-todo>
+  </div>
 </div>
 <!-- *ngIf="category.todos.length" -->

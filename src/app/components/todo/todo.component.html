@@ -14,10 +14,10 @@
   <div class="footer">
     <app-tag [tag]="todo.tag"></app-tag>
     <div>
-      <button class="completeButton" (click)="completeTodo()">
-        {{ todo.completed ? "incomplete" : "complete" }}
+      <button class="button completeButton" (click)="completeTodo()">
+        {{ todo.completed ? "Incomplete" : "Complete" }}
       </button>
-      <button class="deleteButton" (click)="deleteTodo()">Delete</button>
+      <button class="button deleteButton" (click)="deleteTodo()">- Todo</button>
     </div>
   </div>
 </div>

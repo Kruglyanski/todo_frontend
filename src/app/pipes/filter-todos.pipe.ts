@@ -6,8 +6,10 @@ import { ICategory } from '../models/category';
 })
 export class FilterTodosPipe implements PipeTransform {
   transform(categories: ICategory[], value: string): ICategory[] {
-    console.log('asd categories PIPE', categories);
-    console.log('asd value PIPE', value);
+    if (!value) {
+      return categories;
+    }
+
     return categories.reduce<ICategory[]>((acc, cat) => {
       const filteredTodos = cat.todos.filter((todo) =>
         todo.title.toLowerCase().includes(value.toLowerCase())

@@ -14,9 +14,9 @@ import { BehaviorSubject, Subject } from 'rxjs';
 export class CategoryComponent extends BaseComponent {
   c: ICategory[] = [];
   category$ = new BehaviorSubject<ICategory | null>(null);
+  isOpen: boolean = false;
   // @Input() category: ICategory;
   @Input() set category(category: ICategory) {
-    console.log('asd Input category');
     this.category$.next(category);
   }
 
@@ -32,5 +32,9 @@ export class CategoryComponent extends BaseComponent {
   deleteCategory() {
     const category = this.category$.getValue();
     category && this.categoriesService.delete(category.id);
+  }
+
+  openCategory() {
+    this.isOpen = !this.isOpen;
   }
 }
