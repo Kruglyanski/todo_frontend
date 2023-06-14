@@ -23,7 +23,7 @@ export class CreateCategoryComponent extends BaseComponent {
   });
 
   onSubmit() {
-    this.categoriesService.create(this.form.value as ICreateCategoryDto);
+    this.categoriesService.createGQL(this.form.value as ICreateCategoryDto);
     this.modalService.hide();
   }
 

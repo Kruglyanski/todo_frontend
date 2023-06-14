@@ -1,19 +1,11 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  OnInit,
-  ViewChild,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { CategoriesService } from './services/categories.service';
-import { ICategory } from './models/category';
-import { BehaviorSubject, Observable } from 'rxjs';
 import { ModalService } from './services/modal.service';
 import { TodosService } from './services/todos.service';
 import { EModalType } from './enums/modal-type';
 import { AuthService } from './services/auth.service';
 import { ApiService } from './api.service';
 import { BaseComponent } from './components/base-component/base.component';
-import { HeaderComponent } from './components/header/header.component';
 
 @Component({
   selector: 'app-root',
@@ -23,8 +15,6 @@ import { HeaderComponent } from './components/header/header.component';
 })
 export class AppComponent extends BaseComponent implements OnInit {
   EModalType = EModalType;
-
-  // @ViewChild(HeaderComponent) headerComponent: HeaderComponent;
 
   constructor(
     public categoriesService: CategoriesService,
@@ -38,6 +28,7 @@ export class AppComponent extends BaseComponent implements OnInit {
 
   ngOnInit(): void {
     const token = localStorage.getItem('token');
+    console.log('HEADER', { Authorization: `Bearer ${token}` });
 
     if (token) {
       this.apiService.token$.next(token);

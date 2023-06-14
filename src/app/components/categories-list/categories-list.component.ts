@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { ICategory } from '../../models/category';
 import { TodosService } from '../../services/todos.service';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, ReplaySubject, Subject } from 'rxjs';
 import { BaseComponent } from '../base-component/base.component';
 import { CategoriesService } from '../../services/categories.service';
 import { ApiService } from '../../api.service';
@@ -10,9 +10,10 @@ import { ApiService } from '../../api.service';
   selector: 'app-categories-list',
   templateUrl: './categories-list.component.html',
   styleUrls: ['./categories-list.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CategoriesListComponent extends BaseComponent implements OnInit {
-  categories$ = new BehaviorSubject<ICategory[] | null>(null);
+  categories$ = new Subject<ICategory[]>();
 
   constructor(
     public todoService: TodosService,
@@ -23,7 +24,7 @@ export class CategoriesListComponent extends BaseComponent implements OnInit {
   }
 
   trackByFn(_: number, item: ICategory): ICategory['id'] {
-    return item.id;
+    return item?.id;
   }
 
   ngOnInit() {
@@ -33,7 +34,9 @@ export class CategoriesListComponent extends BaseComponent implements OnInit {
 
     this.apiService.token$.subscribe((token) => {
       if (token) {
-        this.categoriesService.getAll();
+        //this.categoriesService.getAll();
+        this.categoriesService.getAllGQL();
+        // this.categoriesService.getAllGQLApollo();
       }
     });
   }

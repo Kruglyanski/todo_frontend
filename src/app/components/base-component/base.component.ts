@@ -14,7 +14,7 @@ export class BaseComponent implements OnDestroy, OnChanges {
   constructor(@Inject('name') private name: string) {}
 
   ngOnChanges(changes: SimpleChanges): void {
-    console.warn(this.name + 'CHANGED', changes);
+    console.warn(this.name, changes);
   }
 
   ngOnDestroy(): void {

@@ -12,17 +12,15 @@ import { BehaviorSubject, Subject } from 'rxjs';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CategoryComponent extends BaseComponent {
-  c: ICategory[] = [];
   category$ = new BehaviorSubject<ICategory | null>(null);
-  isOpen: boolean = false;
-  // @Input() category: ICategory;
+  isOpen: boolean = true;
+
   @Input() set category(category: ICategory) {
     this.category$.next(category);
   }
 
   constructor(private categoriesService: CategoriesService) {
     super(CategoryComponent.name);
-    this.categoriesService.categories$.subscribe((c) => (this.c = c));
   }
 
   trackByFn(_: number, item: ITodo): ITodo['id'] {
@@ -31,7 +29,7 @@ export class CategoryComponent extends BaseComponent {
 
   deleteCategory() {
     const category = this.category$.getValue();
-    category && this.categoriesService.delete(category.id);
+    category && this.categoriesService.deleteGQL(category.id);
   }
 
   openCategory() {

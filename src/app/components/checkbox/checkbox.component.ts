@@ -34,8 +34,6 @@ export class CheckboxComponent extends BaseComponent implements OnInit {
     this.checkboxForm
       .get('isChecked')
       ?.valueChanges.subscribe((isChecked: boolean) => {
-        console.log('Checkbox value:', isChecked);
-        console.log('todo:', this.todo);
         if (isChecked) {
           this.todosService.selectTodo(this.todo);
         } else {

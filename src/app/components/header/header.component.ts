@@ -12,6 +12,7 @@ import { EModalType } from '../../enums/modal-type';
 })
 export class HeaderComponent extends BaseComponent {
   EModalType = EModalType;
+  filterValue: string;
 
   constructor(
     public todoService: TodosService,

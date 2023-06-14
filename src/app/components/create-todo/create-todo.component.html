@@ -21,7 +21,7 @@
   <select formControlName="categoryId" class="form__select">
     <option
       *ngFor="let category of categoriesService.categories$ | async"
-      [value]="category.id"
+      [ngValue]="category.id"
     >
       {{ category.title }}
     </option>

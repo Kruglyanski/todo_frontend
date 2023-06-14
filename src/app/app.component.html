@@ -1,11 +1,10 @@
 <div class="appContainer">
   <div *ngIf="apiService.token$ | async">
-    <app-header></app-header>
-    <app-categories-list></app-categories-list>
+    <app-header />
+    <app-categories-list />
   </div>
-  <app-auth></app-auth>
+  <app-auth />
   <app-modal *ngIf="modalService.isVisible$ | async">
-    <app-modal-content></app-modal-content>
+    <app-modal-content />
   </app-modal>
 </div>
-<!-- *ngIf="todoService.selectedTodos.length" -->

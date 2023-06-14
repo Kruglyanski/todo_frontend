@@ -5,5 +5,5 @@ export interface ICategory {
   id: number;
   title: string;
   todos: ITodo[];
-  user: IUser;
+  user?: IUser;
 }

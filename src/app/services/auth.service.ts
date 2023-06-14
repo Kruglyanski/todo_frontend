@@ -12,21 +12,23 @@ export class AuthService {
 
   register(userDto: IUserDto): Subscription {
     return this.apiService
-      .register(userDto)
+      .registerGQL(userDto)
       .pipe(take(1))
       .subscribe((resp) => {
-        this.apiService.token$.next(resp.token);
-        localStorage.setItem('token', resp.token);
+        const token = resp.data.registration.token;
+        this.apiService.token$.next(token);
+        localStorage.setItem('token', token);
       });
   }
 
   login(userDto: IUserDto): Subscription {
     return this.apiService
-      .login(userDto)
+      .loginGQL(userDto)
       .pipe(take(1))
       .subscribe((resp) => {
-        this.apiService.token$.next(resp.token);
-        localStorage.setItem('token', resp.token);
+        const token = resp.data.login.token;
+        this.apiService.token$.next(token);
+        localStorage.setItem('token', token);
       });
   }
 }

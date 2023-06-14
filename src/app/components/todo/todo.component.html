@@ -3,7 +3,7 @@
     <h2
       class="todo__title"
       [ngClass]="{
-      text_lineTrought: todo.completed,
+        todo__lineTrought: (completed$ | async),
     }"
     >
       {{ todo.title }}
@@ -18,10 +18,10 @@
         class="todo__button todo__completeButton"
         (click)="completeTodo()"
       >
-        {{ todo.completed ? "Incomplete" : "Complete" }}
+        {{ (completed$ | async) ? "Incomplete" : "Complete" }}
       </button>
       <button class="todo__button todo__deleteButton" (click)="deleteTodo()">
-        - Todo
+        Delete
       </button>
     </div>
   </div>

@@ -1,14 +1,14 @@
 <ng-container [ngSwitch]="modalService.modalType">
   <ng-container *ngSwitchCase="EModalType.CREATE_TODO">
-    <app-create-todo></app-create-todo>
+    <app-create-todo />
   </ng-container>
   <ng-container *ngSwitchCase="EModalType.CREATE_CATEGORY">
-    <app-create-category></app-create-category>
+    <app-create-category />
   </ng-container>
   <ng-container *ngSwitchCase="EModalType.REGISTER">
-    <app-register></app-register>
+    <app-register />
   </ng-container>
   <ng-container *ngSwitchCase="EModalType.LOGIN">
-    <app-login></app-login>
+    <app-login />
   </ng-container>
 </ng-container>

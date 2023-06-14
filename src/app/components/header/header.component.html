@@ -10,7 +10,8 @@
     class="header__button header__removeTodosButton"
     (click)="deleteSelectedTodos()"
   >
-    - Todos
+    <mat-icon class="header__removeTodosButton--icon">delete_sweep</mat-icon>
+    <p>Todos</p>
   </button>
   <div *ngIf="!todoService.selectedTodos.length">
     <button

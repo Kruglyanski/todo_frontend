@@ -8,6 +8,7 @@
   padding-left: 40px;
   align-items: center;
   margin-bottom: 24px;
+  padding-top: 20px;
 
   &__filter {
     width: 400px;
@@ -36,5 +37,20 @@
 
   &__removeTodosButton {
     background-color: rgb(123, 5, 5);
+    display: flex;
+    padding: 0;
+    padding-left: 6px;
+    padding-right: 8px;
+    align-items: center;
+    height: 26px;
+  }
+
+  &__removeTodosButton p {
+    margin: 0;
+  }
+
+  &__removeTodosButton--icon {
+    font-size: 18px;
+    padding-top: 4px;
   }
 }

@@ -14,6 +14,7 @@ export class FilterTodosPipe implements PipeTransform {
       const filteredTodos = cat.todos.filter((todo) =>
         todo.title.toLowerCase().includes(value.toLowerCase())
       );
+
       acc.push({ ...cat, todos: filteredTodos });
       return acc;
     }, []);

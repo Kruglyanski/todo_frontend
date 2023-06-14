@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { ITodo } from '../../models/todo';
 import { TodosService } from '../../services/todos.service';
 import { BaseComponent } from '../base-component/base.component';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, map, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-todo',
@@ -11,12 +11,13 @@ import { BehaviorSubject } from 'rxjs';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TodoComponent extends BaseComponent {
-  //@Input() todo: ITodo;
-
   todo$ = new BehaviorSubject<ITodo | null>(null);
-  // @Input() category: ICategory;
+  completed$ = this.todo$.pipe(
+    map((todo) => todo?.completed),
+    takeUntil(this.destroy$)
+  );
+
   @Input() set todo(category: ITodo) {
-    console.log('asd Input todo');
     this.todo$.next(category);
   }
 
@@ -31,6 +32,7 @@ export class TodoComponent extends BaseComponent {
 
   completeTodo() {
     const todo = this.todo$.getValue();
-    todo && this.todosService.update(todo.id, { completed: !todo.completed });
+    todo &&
+      this.todosService.updateGQL(todo.id, { completed: !todo.completed });
   }
 }

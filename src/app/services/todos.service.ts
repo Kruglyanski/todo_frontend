@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import { ITodo } from '../models/todo';
-import { Subscription, take } from 'rxjs';
-import { ICreateTodoDto } from '../models/dto/create-todo.dto';
+import { Subscription } from 'rxjs';
 import { CategoriesService } from './categories.service';
 import { ICategory } from '../models/category';
 import { ApiService } from '../api.service';
 import { IUpdateTodoDto } from '../models/dto/update-todo.dto';
+import { ICreateTodoDto } from '../models/dto/create-todo.dto';
 
 @Injectable({
   providedIn: 'root',
@@ -28,10 +28,108 @@ export class TodosService {
     this.selectedTodos = newSelectedTodos;
   }
 
-  //Нужен?:
-  // getAll(): Observable<ITodo[]> {
-  //   return this.httpClient.get<ITodo[]>('http://localhost:5000/todos');
-  // }
+  //GraphQL:
+
+  updateGQL(id: ITodo['id'], updateTodoDto: IUpdateTodoDto) {
+    return this.apiService
+      .updateTodoGQL(id, updateTodoDto)
+      .pipe()
+      .subscribe((resp) => {
+        const todo = resp.data.updateTodo;
+        const updatedCategories = [
+          ...this.categoriesService.categories$.getValue(),
+        ].map((cat) => {
+          if (cat.id === todo.categoryId) {
+            const newCat = { ...cat };
+            //TODO: разобраться с типами айди
+            const index = cat.todos.findIndex((t) => t.id == todo.id);
+
+            if (index !== -1) {
+              newCat.todos.splice(index, 1, { ...todo });
+            }
+            return newCat;
+          }
+
+          return cat;
+        });
+        this.categoriesService.categories$.next(updatedCategories);
+      });
+  }
+
+  createGQL(todoDto: ICreateTodoDto): Subscription {
+    return this.apiService.createTodoGQL(todoDto).subscribe((resp) => {
+      const todo = resp.data.createTodo;
+      const updatedCategories = [
+        ...this.categoriesService.categories$.getValue(),
+      ].map((category) => {
+        const newCategory = { ...category };
+        if (category.id === todo.category?.id) {
+          newCategory.todos.push(todo);
+          return newCategory;
+        }
+        return category;
+      });
+
+      this.categoriesService.categories$.next(updatedCategories);
+    });
+  }
+
+  deleteManyGQL(): Subscription {
+    const queryIds = this.selectedTodos.map((t) => t.id).join(',');
+
+    return this.apiService
+      .deleteTodosGQL(queryIds)
+      .pipe()
+      .subscribe((resp) => {
+        const deletedTodos = resp.data.deleteTodo;
+        const deletedTodosCategoryIds = deletedTodos.map((t) => t.categoryId);
+        const newCategories = this.categoriesService.categories$
+          .getValue()
+          .reduce<ICategory[]>((acc, cat) => {
+            if (deletedTodosCategoryIds.includes(cat.id)) {
+              const newCat = { ...cat };
+              deletedTodos.forEach((todo) => {
+                if (newCat.id === todo.categoryId) {
+                  //TODO: разобраться с типами айди
+                  const index = newCat.todos.findIndex((t) => t.id == todo.id);
+
+                  if (index !== -1) {
+                    newCat.todos.splice(index, 1);
+                  }
+                }
+              });
+              acc.push(newCat);
+            } else {
+              acc.push(cat);
+            }
+
+            return acc;
+          }, []);
+
+        this.categoriesService.categories$.next(newCategories);
+
+        this.selectedTodos = [];
+      });
+  }
+
+  //REST:
+
+  create(todoDto: ICreateTodoDto): Subscription {
+    return this.apiService.createTodo(todoDto).subscribe((todo) => {
+      const updatedCategories = [
+        ...this.categoriesService.categories$.getValue(),
+      ].map((category) => {
+        const newCategory = { ...category };
+        if (category.id === todo.category?.id) {
+          newCategory.todos.push(todo);
+          return newCategory;
+        }
+        return category;
+      });
+
+      this.categoriesService.categories$.next(updatedCategories);
+    });
+  }
 
   update(id: ITodo['id'], updateTodoDto: IUpdateTodoDto) {
     return this.apiService
@@ -43,36 +141,19 @@ export class TodosService {
         ].map((cat) => {
           if (cat.id === todo.categoryId) {
             const newCat = { ...cat };
-            const index = newCat.todos.findIndex((t) => t.id === todo.id);
+            //TODO: разобраться с типами айди
+            const index = cat.todos.findIndex((t) => t.id == todo.id);
 
             if (index !== -1) {
-              newCat.todos.splice(index, 1, todo);
+              newCat.todos.splice(index, 1, { ...todo });
             }
             return newCat;
           }
 
           return cat;
         });
-        console.log('asd update categories$.next', updatedCategories);
         this.categoriesService.categories$.next(updatedCategories);
       });
-  }
-
-  create(todoDto: ICreateTodoDto): Subscription {
-    return this.apiService.createTodo(todoDto).subscribe((todo) => {
-      const updatedCategories = [
-        ...this.categoriesService.categories$.getValue(),
-      ].map((category) => {
-        const newCategory = { ...category }; ////???????????????/
-        if (category.id === todo.category?.id) {
-          newCategory.todos.push(todo);
-          return newCategory;
-        }
-        return category;
-      });
-      console.log('asd create categories$.next');
-      this.categoriesService.categories$.next(updatedCategories);
-    });
   }
 
   deleteMany(): Subscription {
@@ -90,7 +171,8 @@ export class TodosService {
               const newCat = { ...cat };
               deletedTodos.forEach((todo) => {
                 if (newCat.id === todo.categoryId) {
-                  const index = newCat.todos.findIndex((t) => t.id === todo.id);
+                  //TODO: разобраться с типами айди
+                  const index = newCat.todos.findIndex((t) => t.id == todo.id);
 
                   if (index !== -1) {
                     newCat.todos.splice(index, 1);
@@ -130,68 +212,4 @@ export class TodosService {
         this.categoriesService.categories$.next(updatedCategories);
       });
   }
-
-  // create(todo: ICreateTodoDto): Observable<ITodo> {
-  //   return this.httpClient
-  //     .post<ITodo>('http://localhost:5000/todos', todo)
-  //     .pipe(
-  //       tap((todo) => {
-  //         this.categoriesService.categories = [
-  //           ...this.categoriesService.categories,
-  //         ].map((cat) => {
-  //           if (cat.id === todo.category.id) {
-  //             cat.todos.push(todo);
-  //           }
-  //           return cat;
-  //         });
-  //       })
-  //     );
-  // }
-
-  // deleteMany(): Observable<ITodo> {
-  //   const queryIds = this.selectedTodos.map((t) => t.id).join(',');
-  //   return this.httpClient
-  //     .delete<ITodo>(`http://localhost:5000/todos/${queryIds}`)
-  //     .pipe(
-  //       tap(() => {
-  //         const newCategories = [...this.categoriesService.categories].reduce<
-  //           ICategory[]
-  //         >((acc, cat) => {
-  //           this.selectedTodos.forEach((todo) => {
-  //             if (cat.id === todo.category.id) {
-  //               const index = cat.todos.findIndex((t) => t.id === todo.id);
-
-  //               if (index !== -1) {
-  //                 cat.todos.splice(index, 1);
-  //               }
-  //             }
-  //           });
-  //           acc.push(cat);
-  //           return acc;
-  //         }, []);
-
-  //         this.categoriesService.categories = newCategories;
-
-  //         this.selectedTodos = [];
-  //       })
-  //     );
-  // }
-
-  // delete(todo: ITodo): Observable<ITodo> {
-  //   return this.httpClient
-  //     .delete<ITodo>(`http://localhost:5000/todos/${todo.id}`)
-  //     .pipe(
-  //       tap(() => {
-  //         this.categoriesService.categories = [
-  //           ...this.categoriesService.categories,
-  //         ].map((cat) => {
-  //           if (cat.id === todo.category.id) {
-  //             const newTodos = [...cat.todos].filter((t) => t.id !== todo.id);
-  //             return { ...cat, todos: newTodos };
-  //           }
-  //           return cat;
-  //         });
-  //       })
-  //     );
-  // }
 }

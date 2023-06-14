@@ -6,7 +6,7 @@ import { TodoComponent } from './components/todo/todo.component';
 import { TagComponent } from './components/tag/tag.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CheckboxComponent } from './components/checkbox/checkbox.component';
-import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
+import { HttpClientModule } from '@angular/common/http';
 import { CategoryComponent } from './components/category/category.component';
 import { FilterTodosPipe } from './pipes/filter-todos.pipe';
 import { ModalComponent } from './components/modal/modal.component';
@@ -18,7 +18,7 @@ import { HeaderComponent } from './components/header/header.component';
 import { ModalContentComponent } from './components/modal-content/modal-content.component';
 import { CategoriesListComponent } from './components/categories-list/categories-list.component';
 import { AuthComponent } from './components/auth/auth.component';
-//import { TokenInterceptor } from './services/token.interceptor';
+import { GraphQLModule } from './graphql.module';
 
 @NgModule({
   declarations: [
@@ -43,15 +43,10 @@ import { AuthComponent } from './components/auth/auth.component';
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
+    GraphQLModule,
     MatIconModule,
   ],
-  providers: [
-    // {
-    //   provide: HTTP_INTERCEPTORS,
-    //   useClass: TokenInterceptor,
-    //   multi: true,
-    // },
-  ],
+  providers: [],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

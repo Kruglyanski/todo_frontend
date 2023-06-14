@@ -11,6 +11,7 @@
 
   &__title {
     color: #b1b9c4;
+    margin-top: 12px;
   }
 
   &__titleWrapper {
@@ -45,5 +46,15 @@
     color: rgb(193, 212, 208);
     margin-left: 4px;
     margin-right: 4px;
+    display: flex;
+  }
+
+  &__deleteButton p {
+    margin: 0;
+    margin-top: 4px;
+  }
+
+  &__hidden {
+    display: none;
   }
 }

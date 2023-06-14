@@ -1,4 +1,4 @@
-<form class="form" class="[formGroup]" ="form" (ngSubmit)="onSubmit()">
+<form class="form" [formGroup]="form" (ngSubmit)="onSubmit()">
   <div class="form__inputWrapper">
     <input
       type="text"
@@ -24,18 +24,5 @@
       Password is required!!!
     </div>
   </div>
-
-  <!-- implement roles -->
-
-  <!-- <select formControlName="roleId" class="select">
-      <option
-        *ngFor="let role of rolesService.roles"
-        [value]="role.id"
-        pl
-      >
-        {{ role.title }}
-      </option>
-    </select> -->
-
   <button class="form__button">Register</button>
 </form>
