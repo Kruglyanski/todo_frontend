@@ -50,17 +50,17 @@ export class HeaderComponent extends BaseComponent {
         this.filterChanged.emit(value);
       });
 
-//ПЕРЕДЕЛАТЬ?
+    //ПЕРЕДЕЛАТЬ?
 
     this.todoService.selectedTodos$
-    .pipe(takeUntil(this.destroy$))
-    .subscribe(array => {
-      if(array.length) {
-        this.showDeleteButton$.next(true);
-      } else {
-        this.showDeleteButton$.next(false);
-      }
-    })
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((array) => {
+        if (array.length) {
+          this.showDeleteButton$.next(true);
+        } else {
+          this.showDeleteButton$.next(false);
+        }
+      });
   }
 
   deleteSelectedTodos() {

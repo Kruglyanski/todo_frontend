@@ -1,5 +1,6 @@
 <div class="appContainer">
   <div *ngIf="apiService.token$ | async">
+    <app-chat />
     <app-header (filterChanged)="onFilterChanged($event)" />
     <app-categories-list [filterValue]="filterValue" />
   </div>

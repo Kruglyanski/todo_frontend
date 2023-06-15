@@ -1,7 +1,4 @@
 <app-category
-    *ngFor="
-      let category of filteredCategories$ | async;
-      trackBy: trackByFn
-    "
-    [category]="category"
-  />
+  *ngFor="let category of filteredCategories$ | async; trackBy: trackByFn"
+  [category]="category"
+/>

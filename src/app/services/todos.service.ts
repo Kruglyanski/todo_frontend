@@ -19,11 +19,13 @@ export class TodosService {
   ) {}
 
   selectTodo(todo: ITodo) {
-    this.selectedTodos$.next([...this.selectedTodos$.value, todo])
+    this.selectedTodos$.next([...this.selectedTodos$.value, todo]);
   }
 
   unSelectTodo(todo: ITodo) {
-    this.selectedTodos$.next(this.selectedTodos$.value.filter((t) => t.id !== todo.id))
+    this.selectedTodos$.next(
+      this.selectedTodos$.value.filter((t) => t.id !== todo.id)
+    );
   }
 
   //GraphQL:
@@ -34,20 +36,22 @@ export class TodosService {
       .pipe()
       .subscribe((resp) => {
         const todo = resp.data.updateTodo;
-        const updatedCategories = this.categoriesService.categories$.getValue().map((cat) => {
-          if (cat.id === todo.categoryId) {
-            const newCat = { ...cat };
-            const index = cat.todos.findIndex((t) => t.id === todo.id);
+        const updatedCategories = this.categoriesService.categories$
+          .getValue()
+          .map((cat) => {
+            if (cat.id === todo.categoryId) {
+              const newCat = { ...cat };
+              const index = cat.todos.findIndex((t) => t.id === todo.id);
 
-            if (index !== -1) {
-              newCat.todos.splice(index, 1, { ...todo });
+              if (index !== -1) {
+                newCat.todos.splice(index, 1, { ...todo });
+              }
+
+              return newCat;
             }
 
-            return newCat;
-          }
-
-          return cat;
-        });
+            return cat;
+          });
         this.categoriesService.categories$.next(updatedCategories);
       });
   }
@@ -71,7 +75,10 @@ export class TodosService {
   }
 
   deleteManyGQL(): Subscription {
-    const queryIds = this.selectedTodos$.getValue().map((t) => t.id).join(',');
+    const queryIds = this.selectedTodos$
+      .getValue()
+      .map((t) => t.id)
+      .join(',');
 
     return this.apiService
       .deleteTodosGQL(queryIds)
@@ -86,7 +93,6 @@ export class TodosService {
               const newCat = { ...cat };
               deletedTodos.forEach((todo) => {
                 if (newCat.id === todo.categoryId) {
-
                   const index = newCat.todos.findIndex((t) => t.id === todo.id);
 
                   if (index !== -1) {
@@ -152,7 +158,10 @@ export class TodosService {
   }
 
   deleteMany(): Subscription {
-    const queryIds = this.selectedTodos$.getValue().map((t) => t.id).join(',');
+    const queryIds = this.selectedTodos$
+      .getValue()
+      .map((t) => t.id)
+      .join(',');
 
     return this.apiService
       .deleteTodos(queryIds)

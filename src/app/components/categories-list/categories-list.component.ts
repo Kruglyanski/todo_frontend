@@ -19,16 +19,23 @@ import { ApiService } from '../../api.service';
 export class CategoriesListComponent extends BaseComponent implements OnInit {
   private filterValue$ = new BehaviorSubject<string>('');
 
-  public filteredCategories$ = combineLatest([this.categoriesService.categories$, this.filterValue$]).pipe(
-  map(([categories, value]) => categories.map(category => {
-    if (!value) {
-      return category;
-    }
-    const todos = category.todos.filter(t => t.title.toLowerCase().includes(value.toLowerCase()))
-   
-    return {...category, todos}
-  })),
-)
+  public filteredCategories$ = combineLatest([
+    this.categoriesService.categories$,
+    this.filterValue$,
+  ]).pipe(
+    map(([categories, value]) =>
+      categories.map((category) => {
+        if (!value) {
+          return category;
+        }
+        const todos = category.todos.filter((t) =>
+          t.title.toLowerCase().includes(value.toLowerCase())
+        );
+
+        return { ...category, todos };
+      })
+    )
+  );
 
   @Input() set filterValue(value: string) {
     this.filterValue$.next(value);
@@ -45,9 +52,7 @@ export class CategoriesListComponent extends BaseComponent implements OnInit {
     return item?.id;
   }
 
-
   ngOnInit() {
- 
     this.apiService.token$.pipe(takeUntil(this.destroy$)).subscribe((token) => {
       if (token) {
         this.categoriesService.getAllGQL();

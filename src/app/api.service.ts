@@ -189,11 +189,10 @@ export class ApiService {
   }
 }
 
-
-  // getAllCategoriesGQLApollo() {
-  //   const token = localStorage.getItem('token');
-  //   return this.apollo.query({
-  //     query: gql(categoriesQuery),
-  //     context: { headers: { authorization: `Bearer ${token}` } },
-  //   });
-  // }
+// getAllCategoriesGQLApollo() {
+//   const token = localStorage.getItem('token');
+//   return this.apollo.query({
+//     query: gql(categoriesQuery),
+//     context: { headers: { authorization: `Bearer ${token}` } },
+//   });
+// }

@@ -5,7 +5,6 @@ import { ICategory } from '../models/category';
 
 @Pipe({
   name: 'filterTodos',
-
 })
 export class FilterTodosPipe implements PipeTransform {
   transform(categories: ICategory[], value: string): ICategory[] {
