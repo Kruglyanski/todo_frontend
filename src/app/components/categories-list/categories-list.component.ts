@@ -5,8 +5,7 @@ import {
   OnInit,
 } from '@angular/core';
 import { ICategory } from '../../models/category';
-import { TodosService } from '../../services/todos.service';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, combineLatest, map, takeUntil } from 'rxjs';
 import { BaseComponent } from '../base-component/base.component';
 import { CategoriesService } from '../../services/categories.service';
 import { ApiService } from '../../api.service';
@@ -18,11 +17,24 @@ import { ApiService } from '../../api.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CategoriesListComponent extends BaseComponent implements OnInit {
-  categories$ = new BehaviorSubject<ICategory[]>([]);
-  @Input() filterValue: string = '';
+  private filterValue$ = new BehaviorSubject<string>('');
+
+  public filteredCategories$ = combineLatest([this.categoriesService.categories$, this.filterValue$]).pipe(
+  map(([categories, value]) => categories.map(category => {
+    if (!value) {
+      return category;
+    }
+    const todos = category.todos.filter(t => t.title.toLowerCase().includes(value.toLowerCase()))
+   
+    return {...category, todos}
+  })),
+)
+
+  @Input() set filterValue(value: string) {
+    this.filterValue$.next(value);
+  }
 
   constructor(
-    public todoService: TodosService,
     public categoriesService: CategoriesService,
     private apiService: ApiService
   ) {
@@ -33,28 +45,13 @@ export class CategoriesListComponent extends BaseComponent implements OnInit {
     return item?.id;
   }
 
-  filterCategories() {
-    const filteredCategories = this.todoService.filterTodos(
-      this.categoriesService.categories$.getValue(),
-      this.filterValue
-    );
-    this.categories$.next(filteredCategories);
-  }
 
   ngOnInit() {
-    this.categoriesService.categories$.subscribe((categories) => {
-      this.categories$.next(categories);
-    });
-
-    this.apiService.token$.subscribe((token) => {
+ 
+    this.apiService.token$.pipe(takeUntil(this.destroy$)).subscribe((token) => {
       if (token) {
         this.categoriesService.getAllGQL();
-        //this.categoriesService.getAll(); //REST
       }
     });
-  }
-
-  override ngOnChanges() {
-    this.filterCategories();
   }
 }

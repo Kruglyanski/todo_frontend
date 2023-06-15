@@ -4,17 +4,16 @@
     class="header__filter"
     placeholder="Filter todos"
     [(ngModel)]="filterValue"
-    (input)="applyFilter()"
   />
   <button
-    *ngIf="todoService.selectedTodos.length"
+    *ngIf="showDeleteButton$ | async"
     class="header__button header__removeTodosButton"
     (click)="deleteSelectedTodos()"
   >
     <mat-icon class="header__removeTodosButton--icon">delete_sweep</mat-icon>
     <p>Todos</p>
   </button>
-  <div *ngIf="!todoService.selectedTodos.length">
+  <div *ngIf="!(showDeleteButton$ | async)">
     <button
       class="header__button"
       (click)="modalService.show(EModalType.CREATE_TODO)"

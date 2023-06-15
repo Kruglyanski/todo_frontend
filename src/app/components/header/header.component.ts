@@ -2,6 +2,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   EventEmitter,
+  Input,
   Output,
 } from '@angular/core';
 import { TodosService } from '../../services/todos.service';
@@ -9,6 +10,12 @@ import { BaseComponent } from '../base-component/base.component';
 import { ApiService } from '../../api.service';
 import { ModalService } from '../../services/modal.service';
 import { EModalType } from '../../enums/modal-type';
+import {
+  BehaviorSubject,
+  debounceTime,
+  distinctUntilChanged,
+  takeUntil,
+} from 'rxjs';
 
 @Component({
   selector: 'app-header',
@@ -18,7 +25,12 @@ import { EModalType } from '../../enums/modal-type';
 })
 export class HeaderComponent extends BaseComponent {
   EModalType = EModalType;
-  filterValue: string;
+  showDeleteButton$ = new BehaviorSubject<boolean>(false);
+  filterValue$ = new BehaviorSubject<string>('');
+
+  @Input() set filterValue(value: string) {
+    this.filterValue$.next(value);
+  }
 
   @Output() filterChanged: EventEmitter<string> = new EventEmitter<string>();
 
@@ -30,12 +42,29 @@ export class HeaderComponent extends BaseComponent {
     super(HeaderComponent.name);
   }
 
-  applyFilter() {
-    this.filterChanged.emit(this.filterValue);
+  ngOnInit() {
+    this.filterValue$
+      .pipe(takeUntil(this.destroy$), debounceTime(500), distinctUntilChanged())
+      .subscribe((value) => {
+        console.log('EMIT filterChanged', value);
+        this.filterChanged.emit(value);
+      });
+
+//ПЕРЕДЕЛАТЬ?
+
+    this.todoService.selectedTodos$
+    .pipe(takeUntil(this.destroy$))
+    .subscribe(array => {
+      if(array.length) {
+        this.showDeleteButton$.next(true);
+      } else {
+        this.showDeleteButton$.next(false);
+      }
+    })
   }
 
   deleteSelectedTodos() {
-    this.todoService.deleteMany();
+    this.todoService.deleteManyGQL();
   }
 
   logout() {

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ITodo } from '../models/todo';
-import { Subscription } from 'rxjs';
+import { BehaviorSubject, Subscription } from 'rxjs';
 import { CategoriesService } from './categories.service';
 import { ICategory } from '../models/category';
 import { ApiService } from '../api.service';
@@ -11,8 +11,7 @@ import { ICreateTodoDto } from '../models/dto/create-todo.dto';
   providedIn: 'root',
 })
 export class TodosService {
-  selectedTodos: ITodo[] = [];
-  filterValue: string;
+  selectedTodos$ = new BehaviorSubject<ITodo[]>([]);
 
   constructor(
     private categoriesService: CategoriesService,
@@ -20,27 +19,11 @@ export class TodosService {
   ) {}
 
   selectTodo(todo: ITodo) {
-    this.selectedTodos.push(todo);
+    this.selectedTodos$.next([...this.selectedTodos$.value, todo])
   }
 
   unSelectTodo(todo: ITodo) {
-    const newSelectedTodos = this.selectedTodos.filter((t) => t.id !== todo.id);
-    this.selectedTodos = newSelectedTodos;
-  }
-
-  filterTodos(categories: ICategory[], value: string) {
-    if (!value) {
-      return categories;
-    }
-
-    return categories.reduce<ICategory[]>((acc, cat) => {
-      const filteredTodos = cat.todos.filter((todo) =>
-        todo.title.toLowerCase().includes(value.toLowerCase())
-      );
-
-      acc.push({ ...cat, todos: filteredTodos });
-      return acc;
-    }, []);
+    this.selectedTodos$.next(this.selectedTodos$.value.filter((t) => t.id !== todo.id))
   }
 
   //GraphQL:
@@ -51,17 +34,15 @@ export class TodosService {
       .pipe()
       .subscribe((resp) => {
         const todo = resp.data.updateTodo;
-        const updatedCategories = [
-          ...this.categoriesService.categories$.getValue(),
-        ].map((cat) => {
+        const updatedCategories = this.categoriesService.categories$.getValue().map((cat) => {
           if (cat.id === todo.categoryId) {
             const newCat = { ...cat };
-            //TODO: разобраться с типами айди
-            const index = cat.todos.findIndex((t) => t.id == todo.id);
+            const index = cat.todos.findIndex((t) => t.id === todo.id);
 
             if (index !== -1) {
               newCat.todos.splice(index, 1, { ...todo });
             }
+
             return newCat;
           }
 
@@ -90,7 +71,7 @@ export class TodosService {
   }
 
   deleteManyGQL(): Subscription {
-    const queryIds = this.selectedTodos.map((t) => t.id).join(',');
+    const queryIds = this.selectedTodos$.getValue().map((t) => t.id).join(',');
 
     return this.apiService
       .deleteTodosGQL(queryIds)
@@ -105,8 +86,8 @@ export class TodosService {
               const newCat = { ...cat };
               deletedTodos.forEach((todo) => {
                 if (newCat.id === todo.categoryId) {
-                  //TODO: разобраться с типами айди
-                  const index = newCat.todos.findIndex((t) => t.id == todo.id);
+
+                  const index = newCat.todos.findIndex((t) => t.id === todo.id);
 
                   if (index !== -1) {
                     newCat.todos.splice(index, 1);
@@ -123,7 +104,7 @@ export class TodosService {
 
         this.categoriesService.categories$.next(newCategories);
 
-        this.selectedTodos = [];
+        this.selectedTodos$.next([]);
       });
   }
 
@@ -156,7 +137,6 @@ export class TodosService {
         ].map((cat) => {
           if (cat.id === todo.categoryId) {
             const newCat = { ...cat };
-            //TODO: разобраться с типами айди
             const index = cat.todos.findIndex((t) => t.id == todo.id);
 
             if (index !== -1) {
@@ -172,7 +152,7 @@ export class TodosService {
   }
 
   deleteMany(): Subscription {
-    const queryIds = this.selectedTodos.map((t) => t.id).join(',');
+    const queryIds = this.selectedTodos$.getValue().map((t) => t.id).join(',');
 
     return this.apiService
       .deleteTodos(queryIds)
@@ -186,7 +166,6 @@ export class TodosService {
               const newCat = { ...cat };
               deletedTodos.forEach((todo) => {
                 if (newCat.id === todo.categoryId) {
-                  //TODO: разобраться с типами айди
                   const index = newCat.todos.findIndex((t) => t.id == todo.id);
 
                   if (index !== -1) {
@@ -204,7 +183,7 @@ export class TodosService {
 
         this.categoriesService.categories$.next(newCategories);
 
-        this.selectedTodos = [];
+        this.selectedTodos$.next([]);
       });
   }
 

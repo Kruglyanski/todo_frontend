@@ -58,14 +58,6 @@ export class ApiService {
     return this.fetchGQLData(categoriesQuery);
   }
 
-  // getAllCategoriesGQLApollo() {
-  //   const token = localStorage.getItem('token');
-  //   return this.apollo.query({
-  //     query: gql(categoriesQuery),
-  //     context: { headers: { authorization: `Bearer ${token}` } },
-  //   });
-  // }
-
   loginGQL(userDto: IUserDto): Observable<ILoginQuery> {
     const variables = {
       email: userDto.email,
@@ -196,3 +188,12 @@ export class ApiService {
       .pipe(take(1));
   }
 }
+
+
+  // getAllCategoriesGQLApollo() {
+  //   const token = localStorage.getItem('token');
+  //   return this.apollo.query({
+  //     query: gql(categoriesQuery),
+  //     context: { headers: { authorization: `Bearer ${token}` } },
+  //   });
+  // }
