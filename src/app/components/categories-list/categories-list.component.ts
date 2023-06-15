@@ -1,7 +1,12 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Input,
+  OnInit,
+} from '@angular/core';
 import { ICategory } from '../../models/category';
 import { TodosService } from '../../services/todos.service';
-import { BehaviorSubject, ReplaySubject, Subject } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 import { BaseComponent } from '../base-component/base.component';
 import { CategoriesService } from '../../services/categories.service';
 import { ApiService } from '../../api.service';
@@ -13,7 +18,8 @@ import { ApiService } from '../../api.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CategoriesListComponent extends BaseComponent implements OnInit {
-  categories$ = new Subject<ICategory[]>();
+  categories$ = new BehaviorSubject<ICategory[]>([]);
+  @Input() filterValue: string = '';
 
   constructor(
     public todoService: TodosService,
@@ -27,6 +33,14 @@ export class CategoriesListComponent extends BaseComponent implements OnInit {
     return item?.id;
   }
 
+  filterCategories() {
+    const filteredCategories = this.todoService.filterTodos(
+      this.categoriesService.categories$.getValue(),
+      this.filterValue
+    );
+    this.categories$.next(filteredCategories);
+  }
+
   ngOnInit() {
     this.categoriesService.categories$.subscribe((categories) => {
       this.categories$.next(categories);
@@ -34,10 +48,13 @@ export class CategoriesListComponent extends BaseComponent implements OnInit {
 
     this.apiService.token$.subscribe((token) => {
       if (token) {
-        //this.categoriesService.getAll();
         this.categoriesService.getAllGQL();
-        // this.categoriesService.getAllGQLApollo();
+        //this.categoriesService.getAll(); //REST
       }
     });
+  }
+
+  override ngOnChanges() {
+    this.filterCategories();
   }
 }

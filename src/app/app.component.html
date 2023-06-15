@@ -1,7 +1,7 @@
 <div class="appContainer">
   <div *ngIf="apiService.token$ | async">
-    <app-header />
-    <app-categories-list />
+    <app-header (filterChanged)="onFilterChanged($event)" />
+    <app-categories-list [filterValue]="filterValue" />
   </div>
   <app-auth />
   <app-modal *ngIf="modalService.isVisible$ | async">

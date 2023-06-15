@@ -28,6 +28,21 @@ export class TodosService {
     this.selectedTodos = newSelectedTodos;
   }
 
+  filterTodos(categories: ICategory[], value: string) {
+    if (!value) {
+      return categories;
+    }
+
+    return categories.reduce<ICategory[]>((acc, cat) => {
+      const filteredTodos = cat.todos.filter((todo) =>
+        todo.title.toLowerCase().includes(value.toLowerCase())
+      );
+
+      acc.push({ ...cat, todos: filteredTodos });
+      return acc;
+    }, []);
+  }
+
   //GraphQL:
 
   updateGQL(id: ITodo['id'], updateTodoDto: IUpdateTodoDto) {

@@ -15,6 +15,7 @@ import { BaseComponent } from './components/base-component/base.component';
 })
 export class AppComponent extends BaseComponent implements OnInit {
   EModalType = EModalType;
+  filterValue: string = '';
 
   constructor(
     public categoriesService: CategoriesService,
@@ -33,5 +34,9 @@ export class AppComponent extends BaseComponent implements OnInit {
     if (token) {
       this.apiService.token$.next(token);
     }
+  }
+
+  onFilterChanged(filterValue: string) {
+    this.filterValue = filterValue;
   }
 }

@@ -3,7 +3,8 @@
     type="text"
     class="header__filter"
     placeholder="Filter todos"
-    [(ngModel)]="todoService.filterValue"
+    [(ngModel)]="filterValue"
+    (input)="applyFilter()"
   />
   <button
     *ngIf="todoService.selectedTodos.length"
