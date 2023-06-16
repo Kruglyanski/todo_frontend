@@ -1,7 +1,6 @@
-export interface IListenEvents {
+export interface IOnEvents {
   chatMessage: string;
-  anotherMessage: { text: string };
-  //deleteQuestion: (data: { id: string; user_id: string }) => void;
+  anotherMessage: { text: string; foo: any };
 }
 
 export interface IEmitEvents {

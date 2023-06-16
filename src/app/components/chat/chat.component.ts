@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { WebsocketService } from '../../services/websocket.service';
 import { BehaviorSubject } from 'rxjs';
-import { IListenEvents } from '../../interfaces/events';
 
 @Component({
   selector: 'app-chat',
@@ -12,49 +11,31 @@ export class ChatComponent implements OnInit {
   message: string;
   receivedMessages$ = new BehaviorSubject<string[]>([]);
 
-  constructor(private websocketService: WebsocketService) {}
+  constructor(public websocketService: WebsocketService) {
+    websocketService.connect();
 
-  ngOnInit() {
-    this.websocketService.connect();
-    this.websocketService.getMessage().subscribe(({ data, event }) => {
-      console.log('GETMESS data', data);
-      console.log('GETMESS data', event);
-      if (event === 'chatMessage') {
-        this.receivedMessages$.next([
-          data as IListenEvents[typeof event],
-          ...this.receivedMessages$.value,
-        ]);
-      } else {
-        console.log('ELSE');
-      }
+    websocketService.on$('chatMessage').subscribe((data) => {
+      this.receivedMessages$.next([data, ...this.receivedMessages$.value]);
+      console.log('asd on$ data', data);
     });
-    // <
-    //   T extends IListenEventsMap = IListenEventsMap,
-    //   E extends keyof IListenEventsMap = keyof IListenEventsMap
-    // >(
-    //   event: E,
-    //   fn: T[E]
-    // this.websocketService.getConnectedMessage().subscribe((message: string) => {
-    //   console.log('CONNECTED')
-    //   //this.receivedMessages$.next([message, ...this.receivedMessages$.value]);
-    // });
 
-    // this.websocketService.getAnotherMessage().subscribe((data: any) => {
-    //   console.log('asd getAnotherMessage', )
-    //   this.receivedMessages$.next([data.text, ...this.receivedMessages$.value]);
-    // });
+    websocketService.on$('anotherMessage').subscribe((data) => {
+      this.receivedMessages$.next([data.text, ...this.receivedMessages$.value]);
+      console.log('asd on$ data', data);
+    });
   }
 
+  ngOnInit() {}
+
   sendMessage() {
-    this.websocketService.sendMessage('chatMessage', this.message);
+    this.websocketService.emit('chatMessage', this.message);
     this.message = '';
   }
 
   sendAnotherMessage() {
-    this.websocketService.sendMessage('anotherMessage', {
+    this.websocketService.emit('anotherMessage', {
       text: 'TextAnother',
       foo: { bar: 99 },
     });
-    this.message = '';
   }
 }
