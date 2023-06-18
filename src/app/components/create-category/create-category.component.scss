@@ -20,12 +20,14 @@
     padding-left: 8px;
     padding-right: 8px;
     color: rgb(193, 212, 208);
-    margin-left: 4px;
-    margin-right: 4px;
+    margin-left: 6px;
+    margin-top: 10px;
   }
 
   &__error {
     color: red;
+    position: absolute;
+    top: 68px;
   }
 
   &__inputWrapper {

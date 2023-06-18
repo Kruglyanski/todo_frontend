@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { IUserDto } from '../../models/dto/user.dto';
 import { ModalService } from '../../services/modal.service';
@@ -6,27 +6,44 @@ import { BaseComponent } from '../base-component/base.component';
 import { ApiService } from '../../services/api.service';
 
 @Component({
-  selector: 'app-login',
-  templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss'],
+  selector: 'app-sign',
+  templateUrl: './sign.component.html',
+  styleUrls: ['./sign.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class LoginComponent extends BaseComponent {
+export class SignComponent extends BaseComponent {
+  public isSubmitClicked = false;
   public form = new FormGroup({
     email: new FormControl<string>('', [Validators.required]),
     password: new FormControl<string>(''),
   });
 
+  @Input() type: 'register' | 'login';
+
   constructor(
     private modalService: ModalService,
     private apiService: ApiService
   ) {
-    super(LoginComponent.name);
+    super(SignComponent.name);
   }
 
   public onSubmit() {
-    this.apiService.login(this.form.value as IUserDto);
-    this.modalService.hide();
+    this.isSubmitClicked = true;
+    if (this.form.valid) {
+      switch (this.type) {
+        case 'register': {
+          this.apiService.register(this.form.value as IUserDto);
+          break;
+        }
+        case 'login': {
+          this.apiService.login(this.form.value as IUserDto);
+          break;
+        }
+      }
+
+      this.modalService.hide();
+      this.isSubmitClicked = false;
+    }
   }
 
   public get email() {

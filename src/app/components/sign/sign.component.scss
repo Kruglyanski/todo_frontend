@@ -19,10 +19,19 @@
     border: none;
     font-size: 18px;
     margin-left: 6px;
+    margin-top: 10px;
   }
 
-  &__error {
+  &__email_error {
     color: red;
+    position: absolute;
+    top: 82px;
+  }
+
+  &__password_error {
+    color: red;
+    position: absolute;
+    top: 146px;
   }
 
   &__inputWrapper {

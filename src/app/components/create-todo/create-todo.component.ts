@@ -14,6 +14,8 @@ import { ICreateTodoDto } from '../../models/dto/create-todo.dto';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CreateTodoComponent extends BaseComponent {
+  public isSubmitClicked = false;
+
   public form = new FormGroup({
     title: new FormControl<string>('', [Validators.required]),
     description: new FormControl<string>(''),
@@ -34,8 +36,12 @@ export class CreateTodoComponent extends BaseComponent {
   }
 
   public onSubmit() {
-    this.todosService.createGQL(this.form.value as ICreateTodoDto);
-    this.modalService.hide();
+    this.isSubmitClicked = true;
+    if (this.form.valid) {
+      this.todosService.createGQL(this.form.value as ICreateTodoDto);
+      this.modalService.hide();
+      this.isSubmitClicked = false;
+    }
   }
 
   public get title() {

@@ -6,7 +6,10 @@
       formControlName="title"
       placeholder="Enter Todo Title"
     />
-    <div class="form__error" *ngIf="title.errors?.required && title.touched">
+    <div
+      class="form__error"
+      *ngIf="!title.value && (title.touched || title.dirty || isSubmitClicked)"
+    >
       Title is required!!!
     </div>
   </div>
@@ -29,5 +32,7 @@
   <select formControlName="tag" class="form__select">
     <option *ngFor="let tag of eTagArray" [value]="tag">{{ tag }}</option>
   </select>
-  <button class="form__button">Create todo</button>
+  <button class="form__button" (cklick)="isSubmitClicked = true">
+    Create todo
+  </button>
 </form>

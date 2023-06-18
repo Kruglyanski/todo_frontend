@@ -17,6 +17,7 @@ import {
   takeUntil,
 } from 'rxjs';
 import { WebsocketService } from '../../services/websocket.service';
+import { CategoriesService } from '../../services/categories.service';
 
 @Component({
   selector: 'app-header',
@@ -38,6 +39,7 @@ export class HeaderComponent extends BaseComponent {
 
   constructor(
     public todoService: TodosService,
+    public categoriesService: CategoriesService,
     private apiService: ApiService,
     public modalService: ModalService,
     public websocketService: WebsocketService

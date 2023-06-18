@@ -12,8 +12,7 @@ import { FilterTodosPipe } from './pipes/filter-todos.pipe';
 import { ModalComponent } from './components/modal/modal.component';
 import { CreateTodoComponent } from './components/create-todo/create-todo.component';
 import { CreateCategoryComponent } from './components/create-category/create-category.component';
-import { LoginComponent } from './components/login/login.component';
-import { RegisterComponent } from './components/register/register.component';
+import { SignComponent } from './components/sign/sign.component';
 import { HeaderComponent } from './components/header/header.component';
 import { ModalContentComponent } from './components/modal-content/modal-content.component';
 import { CategoriesListComponent } from './components/categories-list/categories-list.component';
@@ -32,8 +31,7 @@ import { ChatComponent } from './components/chat/chat.component';
     ModalComponent,
     CreateTodoComponent,
     CreateCategoryComponent,
-    LoginComponent,
-    RegisterComponent,
+    SignComponent,
     HeaderComponent,
     ModalContentComponent,
     CategoriesListComponent,

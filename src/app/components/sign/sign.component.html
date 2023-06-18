@@ -6,7 +6,10 @@
       formControlName="email"
       placeholder="Enter Email"
     />
-    <div class="form__error" *ngIf="email.errors?.required && email.touched">
+    <div
+      class="form__email_error"
+      *ngIf="!email.value && (email.touched || email.dirty || isSubmitClicked)"
+    >
       Email is required!!!
     </div>
   </div>
@@ -18,11 +21,16 @@
       placeholder="Enter Password"
     />
     <div
-      class="form__error"
-      *ngIf="password.errors?.required && password.touched"
+      class="form__password_error"
+      *ngIf="
+        !password.value &&
+        (password.touched || password.dirty || isSubmitClicked)
+      "
     >
       Password is required!!!
     </div>
   </div>
-  <button class="form__button">Login</button>
+  <button class="form__button" (click)="isSubmitClicked = true">
+    {{ type | titlecase }}
+  </button>
 </form>

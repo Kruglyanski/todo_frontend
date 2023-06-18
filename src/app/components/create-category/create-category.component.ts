@@ -12,6 +12,8 @@ import { BaseComponent } from '../base-component/base.component';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CreateCategoryComponent extends BaseComponent {
+  public isSubmitClicked = false;
+
   constructor(
     private categoriesService: CategoriesService,
     private modalService: ModalService
@@ -24,8 +26,12 @@ export class CreateCategoryComponent extends BaseComponent {
   });
 
   public onSubmit() {
-    this.categoriesService.createGQL(this.form.value as ICreateCategoryDto);
-    this.modalService.hide();
+    this.isSubmitClicked = true;
+    if (this.form.valid) {
+      this.categoriesService.createGQL(this.form.value as ICreateCategoryDto);
+      this.modalService.hide();
+      this.isSubmitClicked = false;
+    }
   }
 
   public get title() {

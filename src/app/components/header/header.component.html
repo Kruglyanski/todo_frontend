@@ -15,6 +15,7 @@
   </button>
   <div *ngIf="!(showDeleteButton$ | async)">
     <button
+      *ngIf="(categoriesService.categories$ | async)?.length"
       class="header__button"
       (click)="modalService.show(EModalType.CREATE_TODO)"
     >
