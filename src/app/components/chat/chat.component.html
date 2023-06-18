@@ -1,10 +1,7 @@
 <div class="chat">
   <ul class="chat__messages">
-    <li
-      class="chat__message"
-      *ngFor="let receivedMessage of receivedMessages$ | async"
-    >
-      {{ receivedMessage.userEmail + ": " + receivedMessage.message }}
+    <li class="chat__message" *ngFor="let msg of receivedMessages$ | async">
+      <div [ngClass]="msg.color">{{ msg.message }}</div>
     </li>
   </ul>
   <div class="chat__inputWrapper">
@@ -15,7 +12,4 @@
     />
     <button (click)="sendMessage()" class="chat__button">Send</button>
   </div>
-  <button (click)="sendAnotherMessage()" class="chat__button">
-    Send Another
-  </button>
 </div>

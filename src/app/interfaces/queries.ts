@@ -1,5 +1,5 @@
-import { ICategory } from './category';
-import { ITodo } from './todo';
+import { ICategory } from '../models/category';
+import { ITodo } from '../models/todo';
 
 export interface ICategoriesQuery {
   data: {
@@ -48,6 +48,6 @@ export interface IUpdateTodoQuery {
 
 export interface IDeleteTodoQuery {
   data: {
-    deleteTodo: Pick<ITodo, 'id' | 'categoryId'>[];
+    deleteTodo: Pick<ITodo, 'id' | 'categoryId' | 'title'>[];
   };
 }

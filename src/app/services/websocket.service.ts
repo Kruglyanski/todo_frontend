@@ -52,6 +52,6 @@ export class WebsocketService {
   }
 
   public emit<T extends keyof IEmitEvents>(event: T, data: IEmitEvents[T]) {
-    this.socket.emit('message', { action: event, data });
+    this.socket.emit(event, data);
   }
 }

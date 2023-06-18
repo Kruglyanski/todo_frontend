@@ -26,9 +26,9 @@ export class TodoComponent extends BaseComponent {
   }
 
   public deleteTodo() {
-    const todo = this.todo$.getValue();
-    if (todo) {
-      this.todosService.delete(todo);
+    const todoId = this.todo$.getValue()?.id;
+    if (todoId) {
+      this.todosService.deleteGQL(todoId);
     }
   }
 

@@ -3,7 +3,9 @@ import { BehaviorSubject, Subscription, take } from 'rxjs';
 import { ICategory } from '../models/category';
 import { ICreateCategoryDto } from '../models/dto/create-category.dto';
 import { ApiService } from './api.service';
-import { ICategoriesQuery } from '../models/queries';
+import { ICategoriesQuery } from '../interfaces/queries';
+import { EUserEvents } from '../enums/user-events';
+import { WebsocketService } from './websocket.service';
 
 @Injectable({
   providedIn: 'root',
@@ -11,7 +13,7 @@ import { ICategoriesQuery } from '../models/queries';
 export class CategoriesService {
   public categories$ = new BehaviorSubject<ICategory[]>([]);
 
-  constructor(private apiService: ApiService) {}
+  constructor(private apiService: ApiService, private wss: WebsocketService) {}
 
   //GraphQL:
 
@@ -29,11 +31,13 @@ export class CategoriesService {
       .createCategoryGQL(categoryDto)
       .pipe(take(1))
       .subscribe((resp) => {
-        const updatedCategories = [
-          ...this.categories$.getValue(),
-          resp.data.createCategory,
-        ];
+        const category = resp.data.createCategory;
+        const updatedCategories = [...this.categories$.getValue(), category];
         this.categories$.next(updatedCategories);
+        this.wss.emit('userEvent', {
+          userEvent: EUserEvents.CREATE_CATEGORY,
+          entityTitle: category.title,
+        });
       });
   }
 
@@ -47,6 +51,10 @@ export class CategoriesService {
           .getValue()
           .filter((cat) => cat.id !== category.id);
         this.categories$.next(updatedCategories);
+        this.wss.emit('userEvent', {
+          userEvent: EUserEvents.DELETE_CATEGORY,
+          entityTitle: category.title,
+        });
       });
   }
 

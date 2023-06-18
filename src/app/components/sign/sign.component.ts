@@ -4,6 +4,7 @@ import { IUserDto } from '../../models/dto/user.dto';
 import { ModalService } from '../../services/modal.service';
 import { BaseComponent } from '../base-component/base.component';
 import { ApiService } from '../../services/api.service';
+import { WebsocketService } from '../../services/websocket.service';
 
 @Component({
   selector: 'app-sign',
@@ -22,13 +23,15 @@ export class SignComponent extends BaseComponent {
 
   constructor(
     private modalService: ModalService,
-    private apiService: ApiService
+    private apiService: ApiService,
+    private wss: WebsocketService
   ) {
     super(SignComponent.name);
   }
 
   public onSubmit() {
     this.isSubmitClicked = true;
+
     if (this.form.valid) {
       switch (this.type) {
         case 'register': {
@@ -43,6 +46,7 @@ export class SignComponent extends BaseComponent {
 
       this.modalService.hide();
       this.isSubmitClicked = false;
+      this.wss.emit('userSign', { value: 'in' });
     }
   }
 

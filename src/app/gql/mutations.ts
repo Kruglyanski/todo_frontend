@@ -90,6 +90,7 @@ export const deleteTodosMutation = gql`
     deleteTodo(todoIds: $todoIds) {
       id
       categoryId
+      title
     }
   }
 `;

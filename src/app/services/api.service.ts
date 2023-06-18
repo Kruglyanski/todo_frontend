@@ -17,7 +17,7 @@ import {
   ILoginQuery,
   IRegisterQuery,
   IUpdateTodoQuery,
-} from '../models/queries';
+} from '../interfaces/queries';
 import {
   loginMutation,
   registerMutation,

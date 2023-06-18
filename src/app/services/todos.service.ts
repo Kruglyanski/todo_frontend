@@ -6,6 +6,8 @@ import { ICategory } from '../models/category';
 import { ApiService } from './api.service';
 import { IUpdateTodoDto } from '../models/dto/update-todo.dto';
 import { ICreateTodoDto } from '../models/dto/create-todo.dto';
+import { WebsocketService } from './websocket.service';
+import { EUserEvents } from '../enums/user-events';
 
 @Injectable({
   providedIn: 'root',
@@ -15,7 +17,8 @@ export class TodosService {
 
   constructor(
     private categoriesService: CategoriesService,
-    private apiService: ApiService
+    private apiService: ApiService,
+    private wss: WebsocketService
   ) {}
 
   selectTodo(todo: ITodo) {
@@ -69,9 +72,36 @@ export class TodosService {
         }
         return category;
       });
-
       this.categoriesService.categories$.next(updatedCategories);
+      this.wss.emit('userEvent', {
+        userEvent: EUserEvents.CREATE_TODO,
+        entityTitle: todo.title,
+      });
     });
+  }
+
+  deleteGQL(todoId: ITodo['id']): Subscription {
+    return this.apiService
+      .deleteTodosGQL(String(todoId))
+      .pipe()
+      .subscribe((resp) => {
+        const deletedTodo = resp.data.deleteTodo[0];
+        const updatedCategories = this.categoriesService.categories$
+          .getValue()
+          .map((cat) => {
+            if (cat.id === deletedTodo.categoryId) {
+              const newTodos = cat.todos.filter((t) => t.id !== deletedTodo.id);
+              return { ...cat, todos: newTodos };
+            }
+            return cat;
+          });
+
+        this.categoriesService.categories$.next(updatedCategories);
+        this.wss.emit('userEvent', {
+          userEvent: EUserEvents.DELETE_TODO,
+          entityTitle: deletedTodo.title,
+        });
+      });
   }
 
   deleteManyGQL(): Subscription {
@@ -111,6 +141,10 @@ export class TodosService {
         this.categoriesService.categories$.next(newCategories);
 
         this.selectedTodos$.next([]);
+        this.wss.emit('userEvent', {
+          userEvent: EUserEvents.DELETE_TODO,
+          entityTitle: deletedTodos.map((t) => t.title),
+        });
       });
   }
 
@@ -118,16 +152,16 @@ export class TodosService {
 
   create(todoDto: ICreateTodoDto): Subscription {
     return this.apiService.createTodo(todoDto).subscribe((todo) => {
-      const updatedCategories = [
-        ...this.categoriesService.categories$.getValue(),
-      ].map((category) => {
-        const newCategory = { ...category };
-        if (category.id === todo.category?.id) {
-          newCategory.todos.push(todo);
-          return newCategory;
-        }
-        return category;
-      });
+      const updatedCategories = this.categoriesService.categories$
+        .getValue()
+        .map((category) => {
+          const newCategory = { ...category };
+          if (category.id === todo.category?.id) {
+            newCategory.todos.push(todo);
+            return newCategory;
+          }
+          return category;
+        });
 
       this.categoriesService.categories$.next(updatedCategories);
     });

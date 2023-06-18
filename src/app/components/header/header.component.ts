@@ -42,7 +42,7 @@ export class HeaderComponent extends BaseComponent {
     public categoriesService: CategoriesService,
     private apiService: ApiService,
     public modalService: ModalService,
-    public websocketService: WebsocketService
+    public wss: WebsocketService
   ) {
     super(HeaderComponent.name);
   }
@@ -66,7 +66,8 @@ export class HeaderComponent extends BaseComponent {
   }
 
   public logout() {
-    this.websocketService.disconnect();
+    this.wss.emit('userSign', { value: 'out' });
+    this.wss.disconnect();
     this.apiService.token$.next('');
     localStorage.removeItem('token');
   }
