@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { ITodo } from '../../models/todo';
 import { ETag } from '../../enums/tag';
 import { BaseComponent } from '../base-component/base.component';
@@ -7,11 +7,12 @@ import { BaseComponent } from '../base-component/base.component';
   selector: 'app-tag',
   templateUrl: './tag.component.html',
   styleUrls: ['./tag.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TagComponent extends BaseComponent {
-  @Input() tag: ITodo['tag'];
+  @Input() public tag: ITodo['tag'];
 
-  ETag = ETag;
+  public ETag = ETag;
 
   constructor() {
     super(TagComponent.name);

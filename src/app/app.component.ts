@@ -4,7 +4,7 @@ import { ModalService } from './services/modal.service';
 import { TodosService } from './services/todos.service';
 import { EModalType } from './enums/modal-type';
 import { AuthService } from './services/auth.service';
-import { ApiService } from './api.service';
+import { ApiService } from './services/api.service';
 import { BaseComponent } from './components/base-component/base.component';
 
 @Component({
@@ -14,8 +14,8 @@ import { BaseComponent } from './components/base-component/base.component';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AppComponent extends BaseComponent implements OnInit {
-  EModalType = EModalType;
-  filterValue: string = '';
+  public EModalType = EModalType;
+  public filterValue: string = '';
 
   constructor(
     public categoriesService: CategoriesService,
@@ -36,7 +36,7 @@ export class AppComponent extends BaseComponent implements OnInit {
     }
   }
 
-  onFilterChanged(filterValue: string) {
+  public onFilterChanged(filterValue: string) {
     this.filterValue = filterValue;
   }
 }

@@ -1,22 +1,22 @@
-import gql from "graphql-tag";
+import gql from 'graphql-tag';
 
 export const categoriesQuery = gql`
-query categoriesQuery {
-  categories {
-    todos {
-      completed
-      description
-      id
-      tag
-      title
-      category{
+  query categoriesQuery {
+    categories {
+      todos {
+        completed
+        description
         id
+        tag
         title
+        category {
+          id
+          title
+        }
+        categoryId
       }
-      categoryId
+      title
+      id
     }
-    title
-    id
   }
-}
 `;

@@ -1,5 +1,5 @@
 export interface IOnEvents {
-  chatMessage: {message: string, userEmail: string};
+  chatMessage: { message: string; userEmail: string };
   anotherMessage: { text: string; foo: any };
 }
 

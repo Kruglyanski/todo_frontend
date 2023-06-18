@@ -14,7 +14,7 @@ import { ICreateTodoDto } from '../../models/dto/create-todo.dto';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CreateTodoComponent extends BaseComponent {
-  form = new FormGroup({
+  public form = new FormGroup({
     title: new FormControl<string>('', [Validators.required]),
     description: new FormControl<string>(''),
     categoryId: new FormControl<number | null>(
@@ -23,7 +23,7 @@ export class CreateTodoComponent extends BaseComponent {
     tag: new FormControl<ETag>(ETag.LOW),
   });
 
-  eTagArray = Object.values(ETag);
+  public eTagArray = Object.values(ETag);
 
   constructor(
     private todosService: TodosService,
@@ -33,12 +33,12 @@ export class CreateTodoComponent extends BaseComponent {
     super(CreateTodoComponent.name);
   }
 
-  onSubmit() {
+  public onSubmit() {
     this.todosService.createGQL(this.form.value as ICreateTodoDto);
     this.modalService.hide();
   }
 
-  get title() {
+  public get title() {
     return this.form.controls.title as FormControl;
   }
 }

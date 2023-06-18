@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Subscription, take } from 'rxjs';
 import { ICategory } from '../models/category';
 import { ICreateCategoryDto } from '../models/dto/create-category.dto';
-import { ApiService } from '../api.service';
+import { ApiService } from './api.service';
 import { ModalService } from './modal.service';
 import { ICategoriesQuery } from '../models/queries';
 
@@ -10,7 +10,7 @@ import { ICategoriesQuery } from '../models/queries';
   providedIn: 'root',
 })
 export class CategoriesService {
-  categories$ = new BehaviorSubject<ICategory[]>([]);
+  public categories$ = new BehaviorSubject<ICategory[]>([]);
 
   constructor(
     private modalService: ModalService,
@@ -19,7 +19,7 @@ export class CategoriesService {
 
   //GraphQL:
 
-  getAllGQL(): Subscription {
+  public getAllGQL(): Subscription {
     return this.apiService
       .getAllCategoriesGQL()
       .pipe(take(1))
@@ -28,7 +28,7 @@ export class CategoriesService {
       });
   }
 
-  createGQL(categoryDto: ICreateCategoryDto): Subscription {
+  public createGQL(categoryDto: ICreateCategoryDto): Subscription {
     return this.apiService
       .createCategoryGQL(categoryDto)
       .pipe(take(1))
@@ -42,7 +42,7 @@ export class CategoriesService {
       });
   }
 
-  deleteGQL(categoryId: ICategory['id']): Subscription {
+  public deleteGQL(categoryId: ICategory['id']): Subscription {
     return this.apiService
       .deleteCategoryGQL(categoryId)
       .pipe(take(1))
@@ -58,7 +58,7 @@ export class CategoriesService {
 
   //REST:
 
-  getAll(): Subscription {
+  public getAll(): Subscription {
     return this.apiService
       .getAllCategories()
       .pipe(take(1))
@@ -67,7 +67,7 @@ export class CategoriesService {
       });
   }
 
-  create(categoryDto: ICreateCategoryDto): Subscription {
+  public create(categoryDto: ICreateCategoryDto): Subscription {
     return this.apiService
       .createCategory(categoryDto)
       .pipe(take(1))
@@ -78,7 +78,7 @@ export class CategoriesService {
       });
   }
 
-  delete(categoryId: ICategory['id']): Subscription {
+  public delete(categoryId: ICategory['id']): Subscription {
     return this.apiService
       .deleteCategory(categoryId)
       .pipe(take(1))

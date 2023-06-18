@@ -1,4 +1,4 @@
-import gql from "graphql-tag";
+import gql from 'graphql-tag';
 
 export const loginMutation = gql`
   mutation login($email: String!, $password: String!) {
@@ -17,8 +17,8 @@ export const registerMutation = gql`
 `;
 
 export const createCategoryMutation = gql`
-mutation createCategory($title: String!) {
-    createCategory(categoryInput: {title: $title}) {
+  mutation createCategory($title: String!) {
+    createCategory(categoryInput: { title: $title }) {
       id
       title
       todos {
@@ -33,9 +33,19 @@ mutation createCategory($title: String!) {
 `;
 
 export const createTodoMutation = gql`
-mutation createTodo($categoryId: Float!, $title: String!, $description: String, $tag: String, ) {
+  mutation createTodo(
+    $categoryId: Float!
+    $title: String!
+    $description: String
+    $tag: String
+  ) {
     createTodo(
-      createTodo: {categoryId: $categoryId, description: $description, title: $title, tag: $tag}
+      createTodo: {
+        categoryId: $categoryId
+        description: $description
+        title: $title
+        tag: $tag
+      }
     ) {
       category {
         id
@@ -51,16 +61,19 @@ mutation createTodo($categoryId: Float!, $title: String!, $description: String, 
 `;
 
 export const deleteCategoryMutation = gql`
-mutation deleteCategory( $categoryId: Float!) {
+  mutation deleteCategory($categoryId: Float!) {
     deleteCategory(categoryId: $categoryId) {
-        id
-        title
-      }
+      id
+      title
     }
+  }
 `;
 
 export const updateTodoMutation = gql`
-mutation updateTodo( $todoId: Float = 2, $updateTodoInput: UpdateTodoInput = {completed: true}) {
+  mutation updateTodo(
+    $todoId: Float = 2
+    $updateTodoInput: UpdateTodoInput = { completed: true }
+  ) {
     updateTodo(todoId: $todoId, updateTodoInput: $updateTodoInput) {
       completed
       description
@@ -73,7 +86,7 @@ mutation updateTodo( $todoId: Float = 2, $updateTodoInput: UpdateTodoInput = {co
 `;
 
 export const deleteTodosMutation = gql`
-mutation MyMutation($todoIds: String!) {
+  mutation MyMutation($todoIds: String!) {
     deleteTodo(todoIds: $todoIds) {
       id
       categoryId

@@ -16,8 +16,8 @@ import { BaseComponent } from '../base-component/base.component';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CheckboxComponent extends BaseComponent implements OnInit {
-  @Input() todo: ITodo;
-  checkboxForm: FormGroup;
+  @Input() public todo: ITodo;
+  public checkboxForm: FormGroup;
 
   constructor(
     private formBuilder: FormBuilder,

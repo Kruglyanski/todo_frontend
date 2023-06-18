@@ -8,7 +8,7 @@ import { ICategory } from '../../models/category';
 import { BehaviorSubject, combineLatest, map, takeUntil } from 'rxjs';
 import { BaseComponent } from '../base-component/base.component';
 import { CategoriesService } from '../../services/categories.service';
-import { ApiService } from '../../api.service';
+import { ApiService } from '../../services/api.service';
 
 @Component({
   selector: 'app-categories-list',
@@ -48,7 +48,7 @@ export class CategoriesListComponent extends BaseComponent implements OnInit {
     super(CategoriesListComponent.name);
   }
 
-  trackByFn(_: number, item: ICategory): ICategory['id'] {
+  public trackByFn(_: number, item: ICategory): ICategory['id'] {
     return item?.id;
   }
 

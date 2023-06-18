@@ -11,13 +11,13 @@ import { BehaviorSubject, map, takeUntil } from 'rxjs';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TodoComponent extends BaseComponent {
-  todo$ = new BehaviorSubject<ITodo | null>(null);
-  completed$ = this.todo$.pipe(
+  public todo$ = new BehaviorSubject<ITodo | null>(null);
+  public completed$ = this.todo$.pipe(
     map((todo) => todo?.completed),
     takeUntil(this.destroy$)
   );
 
-  @Input() set todo(category: ITodo) {
+  @Input() public set todo(category: ITodo) {
     this.todo$.next(category);
   }
 
@@ -25,14 +25,17 @@ export class TodoComponent extends BaseComponent {
     super(TodoComponent.name);
   }
 
-  deleteTodo() {
+  public deleteTodo() {
     const todo = this.todo$.getValue();
-    todo && this.todosService.delete(todo);
+    if (todo) {
+      this.todosService.delete(todo);
+    }
   }
 
-  completeTodo() {
+  public completeTodo() {
     const todo = this.todo$.getValue();
-    todo &&
+    if (todo) {
       this.todosService.updateGQL(todo.id, { completed: !todo.completed });
+    }
   }
 }

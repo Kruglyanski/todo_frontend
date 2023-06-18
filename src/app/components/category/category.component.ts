@@ -12,8 +12,8 @@ import { BehaviorSubject, Subject } from 'rxjs';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CategoryComponent extends BaseComponent {
-  category$ = new BehaviorSubject<ICategory | null>(null);
-  isOpen: boolean = true;
+  public category$ = new BehaviorSubject<ICategory | null>(null);
+  public isOpen: boolean = true;
 
   @Input() set category(category: ICategory) {
     this.category$.next(category);
@@ -27,12 +27,12 @@ export class CategoryComponent extends BaseComponent {
     return item.id;
   }
 
-  deleteCategory() {
+  public deleteCategory() {
     const category = this.category$.getValue();
     category && this.categoriesService.deleteGQL(category.id);
   }
 
-  openCategory() {
+  public openCategory() {
     this.isOpen = !this.isOpen;
   }
 }

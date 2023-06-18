@@ -3,7 +3,7 @@ import { ITodo } from '../models/todo';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { CategoriesService } from './categories.service';
 import { ICategory } from '../models/category';
-import { ApiService } from '../api.service';
+import { ApiService } from './api.service';
 import { IUpdateTodoDto } from '../models/dto/update-todo.dto';
 import { ICreateTodoDto } from '../models/dto/create-todo.dto';
 

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { WebsocketService } from '../../services/websocket.service';
 import { BehaviorSubject } from 'rxjs';
 
@@ -6,13 +6,15 @@ import { BehaviorSubject } from 'rxjs';
   selector: 'app-chat',
   templateUrl: './chat.component.html',
   styleUrls: ['./chat.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ChatComponent implements OnInit {
-  message: string;
-  receivedMessages$ = new BehaviorSubject<{userEmail: string, message: string}[]>([]);
+  public message: string;
+  public receivedMessages$ = new BehaviorSubject<
+    { userEmail: string; message: string }[]
+  >([]);
 
   constructor(public websocketService: WebsocketService) {
-
     websocketService.connect();
 
     websocketService.on$('chatMessage').subscribe((data) => {
@@ -21,19 +23,22 @@ export class ChatComponent implements OnInit {
     });
 
     websocketService.on$('anotherMessage').subscribe((data) => {
-      this.receivedMessages$.next([{message: data.text, userEmail: 'test'}, ...this.receivedMessages$.value]);
+      this.receivedMessages$.next([
+        { message: data.text, userEmail: 'test' },
+        ...this.receivedMessages$.value,
+      ]);
       console.log('asd on$ data', data);
     });
   }
 
   ngOnInit() {}
 
-  sendMessage() {
+  public sendMessage() {
     this.websocketService.emit('chatMessage', this.message);
     this.message = '';
   }
 
-  sendAnotherMessage() {
+  public sendAnotherMessage() {
     this.websocketService.emit('anotherMessage', {
       text: 'TextAnother',
       foo: { bar: 99 },
