@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, take } from 'rxjs';
+import { BehaviorSubject, Observable, Subscription, take } from 'rxjs';
 import { ICategory } from '../models/category';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { ICreateCategoryDto } from '../models/dto/create-category.dto';
@@ -36,8 +36,7 @@ const BASE_URL = 'http://localhost:5000';
   providedIn: 'root',
 })
 export class ApiService {
-  public token$ = new BehaviorSubject<string>('');
-
+  public token$ = new BehaviorSubject(localStorage.getItem('token') ?? '');
   constructor(private httpClient: HttpClient) {}
 
   //GraphQL:
@@ -46,12 +45,10 @@ export class ApiService {
     query: DocumentNode,
     variables?: { [key: string]: any }
   ): Observable<T> {
-    const token = localStorage.getItem('token');
-
     return this.httpClient.post<T>(
       `${BASE_URL}/graphql`,
       { query: query.loc?.source.body, variables },
-      { headers: { authorization: `Bearer ${token}` } }
+      { headers: { authorization: `Bearer ${this.token$.getValue()}` } }
     );
   }
 
@@ -102,19 +99,30 @@ export class ApiService {
   public getHeaders(): HttpHeaders {
     const headers: { [key: string]: string } = {};
     headers.Authorization = `Bearer ${this.token$.getValue()}`;
+
     return new HttpHeaders(headers);
   }
 
-  public register(userDto: IUserDto): Observable<{ token: string }> {
+  public register(userDto: IUserDto): Subscription {
     return this.httpClient
       .post<{ token: string }>(`${BASE_URL}/auth/registration`, userDto)
-      .pipe(take(1));
+      .pipe(take(1))
+      .subscribe(({ token }) => {
+        console.log('TOKEN', token);
+        this.token$.next(token);
+        localStorage.setItem('token', token);
+      });
   }
 
-  public login(userDto: IUserDto): Observable<{ token: string }> {
+  public login(userDto: IUserDto): Subscription {
     return this.httpClient
       .post<{ token: string }>(`${BASE_URL}/auth/login`, userDto)
-      .pipe(take(1));
+      .pipe(take(1))
+      .subscribe(({ token }) => {
+        console.log('TOKEN', token);
+        this.token$.next(token);
+        localStorage.setItem('token', token);
+      });
   }
 
   public getAllCategories(): Observable<ICategory[]> {

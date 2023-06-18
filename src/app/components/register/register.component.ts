@@ -1,9 +1,9 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ModalService } from '../../services/modal.service';
-import { AuthService } from '../../services/auth.service';
 import { IUserDto } from '../../models/dto/user.dto';
 import { BaseComponent } from '../base-component/base.component';
+import { ApiService } from '../../services/api.service';
 
 @Component({
   selector: 'app-register',
@@ -20,13 +20,13 @@ export class RegisterComponent extends BaseComponent {
 
   constructor(
     private modalService: ModalService,
-    private authService: AuthService
+    private apiService: ApiService
   ) {
     super(RegisterComponent.name);
   }
 
   public onSubmit() {
-    this.authService.register(this.form.value as IUserDto);
+    this.apiService.register(this.form.value as IUserDto);
     this.modalService.hide();
   }
 

@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { BaseComponent } from '../base-component/base.component';
 import { ModalService } from '../../services/modal.service';
-import { ApiService } from '../../services/api.service';
 import { EModalType } from '../../enums/modal-type';
+import { ApiService } from '../../services/api.service';
 
 @Component({
   selector: 'app-auth',
