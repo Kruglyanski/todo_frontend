@@ -3,22 +3,24 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { io, Socket } from 'socket.io-client';
 import { IEmitEvents, IOnEvents } from '../interfaces/events';
 
+
 @Injectable({
   providedIn: 'root',
 })
-export class WebsocketService {
-  private socket: Socket = io('http://localhost:5000');
+export class WebsocketService{
+  private socket: Socket = io('http://localhost:5000',{auth: {token: '' } });
 
   public connected$ = new BehaviorSubject(false);
 
-  constructor() {}
-
   public connect() {
+
+    (this.socket.io.opts as any).auth.token = `Bearer ${localStorage.getItem('token')}`
+
     this.socket.connect();
 
+    console.log('WebsocketService connect');
     this.socket.on('connect', () => {
       this.connected$.next(true);
-      console.log('WebsocketService connect');
     });
 
     this.socket.on('connect_error', (error) => {

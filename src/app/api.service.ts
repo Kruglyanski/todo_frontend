@@ -7,7 +7,6 @@ import { ITodo } from './models/todo';
 import { IUserDto } from './models/dto/user.dto';
 import { IUpdateTodoDto } from './models/dto/update-todo.dto';
 import { ICreateTodoDto } from './models/dto/create-todo.dto';
-import { Apollo, gql } from 'apollo-angular';
 import { categoriesQuery } from './gql/queries';
 import {
   ICategoriesQuery,
@@ -29,6 +28,9 @@ import {
   deleteTodosMutation,
 } from './gql/mutations';
 
+import { DocumentNode } from 'graphql';
+import { Query, UpdateTodoInput } from '../generated/graphql';
+
 const BASE_URL = 'http://localhost:5000';
 
 @Injectable({
@@ -42,14 +44,14 @@ export class ApiService {
   //GraphQL:
 
   private fetchGQLData<T>(
-    query: string,
+    query: DocumentNode,
     variables?: { [key: string]: any }
   ): Observable<T> {
     const token = localStorage.getItem('token');
 
     return this.httpClient.post<T>(
       `${BASE_URL}/graphql`,
-      { query, variables },
+      { query: query.loc?.source.body, variables },
       { headers: { authorization: `Bearer ${token}` } }
     );
   }
@@ -189,10 +191,3 @@ export class ApiService {
   }
 }
 
-// getAllCategoriesGQLApollo() {
-//   const token = localStorage.getItem('token');
-//   return this.apollo.query({
-//     query: gql(categoriesQuery),
-//     context: { headers: { authorization: `Bearer ${token}` } },
-//   });
-// }

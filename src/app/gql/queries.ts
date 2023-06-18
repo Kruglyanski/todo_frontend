@@ -1,4 +1,6 @@
-export const categoriesQuery = `
+import gql from "graphql-tag";
+
+export const categoriesQuery = gql`
 query categoriesQuery {
   categories {
     todos {

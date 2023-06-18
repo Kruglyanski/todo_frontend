@@ -9,9 +9,10 @@ import { BehaviorSubject } from 'rxjs';
 })
 export class ChatComponent implements OnInit {
   message: string;
-  receivedMessages$ = new BehaviorSubject<string[]>([]);
+  receivedMessages$ = new BehaviorSubject<{userEmail: string, message: string}[]>([]);
 
   constructor(public websocketService: WebsocketService) {
+
     websocketService.connect();
 
     websocketService.on$('chatMessage').subscribe((data) => {
@@ -20,7 +21,7 @@ export class ChatComponent implements OnInit {
     });
 
     websocketService.on$('anotherMessage').subscribe((data) => {
-      this.receivedMessages$.next([data.text, ...this.receivedMessages$.value]);
+      this.receivedMessages$.next([{message: data.text, userEmail: 'test'}, ...this.receivedMessages$.value]);
       console.log('asd on$ data', data);
     });
   }

@@ -4,7 +4,7 @@
       class="chat__message"
       *ngFor="let receivedMessage of receivedMessages$ | async"
     >
-      {{ receivedMessage }}
+      {{ receivedMessage.userEmail+": "+ receivedMessage.message }}
     </li>
   </ul>
   <div class="chat__inputWrapper">

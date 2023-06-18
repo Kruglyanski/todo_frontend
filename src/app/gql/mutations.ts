@@ -1,4 +1,6 @@
-export const loginMutation = `
+import gql from "graphql-tag";
+
+export const loginMutation = gql`
   mutation login($email: String!, $password: String!) {
     login(userInput: { email: $email, password: $password }) {
       token
@@ -6,7 +8,7 @@ export const loginMutation = `
   }
 `;
 
-export const registerMutation = `
+export const registerMutation = gql`
   mutation register($email: String!, $password: String!) {
     registration(userInput: { email: $email, password: $password }) {
       token
@@ -14,7 +16,7 @@ export const registerMutation = `
   }
 `;
 
-export const createCategoryMutation = `
+export const createCategoryMutation = gql`
 mutation createCategory($title: String!) {
     createCategory(categoryInput: {title: $title}) {
       id
@@ -30,7 +32,7 @@ mutation createCategory($title: String!) {
   }
 `;
 
-export const createTodoMutation = `
+export const createTodoMutation = gql`
 mutation createTodo($categoryId: Float!, $title: String!, $description: String, $tag: String, ) {
     createTodo(
       createTodo: {categoryId: $categoryId, description: $description, title: $title, tag: $tag}
@@ -48,7 +50,7 @@ mutation createTodo($categoryId: Float!, $title: String!, $description: String, 
   }
 `;
 
-export const deleteCategoryMutation = `
+export const deleteCategoryMutation = gql`
 mutation deleteCategory( $categoryId: Float!) {
     deleteCategory(categoryId: $categoryId) {
         id
@@ -57,7 +59,7 @@ mutation deleteCategory( $categoryId: Float!) {
     }
 `;
 
-export const updateTodoMutation = `
+export const updateTodoMutation = gql`
 mutation updateTodo( $todoId: Float = 2, $updateTodoInput: UpdateTodoInput = {completed: true}) {
     updateTodo(todoId: $todoId, updateTodoInput: $updateTodoInput) {
       completed
@@ -70,7 +72,7 @@ mutation updateTodo( $todoId: Float = 2, $updateTodoInput: UpdateTodoInput = {co
   }
 `;
 
-export const deleteTodosMutation = `
+export const deleteTodosMutation = gql`
 mutation MyMutation($todoIds: String!) {
     deleteTodo(todoIds: $todoIds) {
       id

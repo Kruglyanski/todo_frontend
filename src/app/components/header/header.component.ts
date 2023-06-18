@@ -16,6 +16,7 @@ import {
   distinctUntilChanged,
   takeUntil,
 } from 'rxjs';
+import { WebsocketService } from '../../services/websocket.service';
 
 @Component({
   selector: 'app-header',
@@ -37,7 +38,8 @@ export class HeaderComponent extends BaseComponent {
   constructor(
     public todoService: TodosService,
     private apiService: ApiService,
-    public modalService: ModalService
+    public modalService: ModalService,
+    public websocketService: WebsocketService
   ) {
     super(HeaderComponent.name);
   }
@@ -46,20 +48,13 @@ export class HeaderComponent extends BaseComponent {
     this.filterValue$
       .pipe(takeUntil(this.destroy$), debounceTime(500), distinctUntilChanged())
       .subscribe((value) => {
-        console.log('EMIT filterChanged', value);
         this.filterChanged.emit(value);
       });
-
-    //ПЕРЕДЕЛАТЬ?
 
     this.todoService.selectedTodos$
       .pipe(takeUntil(this.destroy$))
       .subscribe((array) => {
-        if (array.length) {
-          this.showDeleteButton$.next(true);
-        } else {
-          this.showDeleteButton$.next(false);
-        }
+        this.showDeleteButton$.next(!!array.length);
       });
   }
 
@@ -68,6 +63,7 @@ export class HeaderComponent extends BaseComponent {
   }
 
   logout() {
+    this.websocketService.disconnect();
     this.apiService.token$.next('');
     localStorage.removeItem('token');
   }
