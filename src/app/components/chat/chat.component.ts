@@ -19,6 +19,11 @@ export class ChatComponent {
   constructor(public websocketService: WebsocketService) {
     websocketService.connect();
 
+    websocketService.on$('clientConnected').subscribe((data) => {
+     
+      console.log('asd on$ clientConnected', data);
+    });
+
     websocketService.on$('chatMessage').subscribe((data) => {
       const message = `User "${data.userEmail}": msg: ${data.message}`;
 
