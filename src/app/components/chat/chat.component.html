@@ -7,9 +7,16 @@
           msg.type == 'chatMessage' &&
           msg.userEmail === (apiService.email$ | async)
         "
-        class="chat__deleteButton"
+        class="chat__buttonsContainer"
       >
-        <mat-icon class="chat__deleteButton" (click)="deleteMessage(msg.id)"
+        <mat-icon
+          class="chat__messageButton chat__editButton"
+          (click)="editMessage(msg)"
+          >edit</mat-icon
+        >
+        <mat-icon
+          class="chat__messageButton chat__deleteButton"
+          (click)="deleteMessage(msg.id)"
           >delete_sweep</mat-icon
         >
       </div>
@@ -17,6 +24,7 @@
   </ul>
   <div class="chat__inputWrapper">
     <input
+      #input
       [(ngModel)]="message"
       placeholder="Enter Message"
       class="chat__input"

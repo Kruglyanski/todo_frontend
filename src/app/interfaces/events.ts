@@ -3,6 +3,7 @@ import { IMessage } from '../models/message';
 
 export interface IOnEvents {
   chatMessage: IMessage;
+  editMessage: { id: number; message: string };
   deleteMessage: number;
   clientConnected: IMessage[];
 }
@@ -13,5 +14,6 @@ export interface IEmitEvents {
     type: EMessageType;
     entityTitle?: string[];
   };
+  editMessage: { id: number; message: string };
   deleteMessage: number;
 }

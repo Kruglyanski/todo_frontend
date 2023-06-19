@@ -1,4 +1,9 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  ViewChild,
+} from '@angular/core';
 import { WebsocketService } from '../../services/websocket.service';
 import { BehaviorSubject, takeUntil } from 'rxjs';
 import { EMessageType } from '../../enums/message-type';
@@ -14,7 +19,11 @@ import { BaseComponent } from '../base-component/base.component';
 })
 export class ChatComponent extends BaseComponent {
   public message: string;
+  public editingMessageId: number | null = null;
   public messages$ = new BehaviorSubject<IMessage[]>([]);
+
+  @ViewChild('input', { static: false, read: ElementRef })
+  input: ElementRef<HTMLInputElement>;
 
   constructor(
     public websocketService: WebsocketService,
@@ -41,6 +50,21 @@ export class ChatComponent extends BaseComponent {
       });
 
     websocketService
+      .on$('editMessage')
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((msg) => {
+        this.messages$.next(
+          this.messages$.value.map((m) => {
+            if (m.id === msg.id) {
+              return { ...m, message: msg.message };
+            }
+            return m;
+          })
+        );
+        console.log('on$ editMessage', msg);
+      });
+
+    websocketService
       .on$('deleteMessage')
       .pipe(takeUntil(this.destroy$))
       .subscribe((msgId) => {
@@ -52,12 +76,29 @@ export class ChatComponent extends BaseComponent {
   }
 
   public sendMessage() {
-    this.websocketService.emit('chatMessage', {
-      message: this.message,
-      type: EMessageType.MESSAGE,
-    });
-    console.log('emit sendMessage', this.message);
+    if (this.editingMessageId) {
+      this.websocketService.emit('editMessage', {
+        message: this.message,
+        id: this.editingMessageId,
+      });
+      console.log('emit editMessage', this.message);
+      this.editingMessageId = null;
+    } else {
+      this.websocketService.emit('chatMessage', {
+        message: this.message,
+        type: EMessageType.MESSAGE,
+      });
+      console.log('emit sendMessage', this.message);
+    }
+
     this.message = '';
+  }
+
+  public editMessage(msg: IMessage) {
+    this.editingMessageId = msg.id;
+    this.message = msg.message;
+    this.input.nativeElement.focus();
+    console.log('editMessage', msg);
   }
 
   public deleteMessage(msgId: number) {

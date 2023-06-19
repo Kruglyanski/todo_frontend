@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, distinctUntilChanged } from 'rxjs';
+import { Observable, distinctUntilChanged } from 'rxjs';
 import { io, Socket } from 'socket.io-client';
 import { IEmitEvents, IOnEvents } from '../interfaces/events';
 import { ApiService } from './api.service';
@@ -15,6 +15,7 @@ export class WebsocketService {
       !!token ? this.connect(token) : this.disconnect();
     });
   }
+
   public connect(token: string) {
     (this.socket.io.opts as any).auth.token = `Bearer ${token}`;
 
@@ -31,7 +32,6 @@ export class WebsocketService {
     this.socket.on('disconnect', () => {
       console.log('WebsocketService disconnect');
     });
-
   }
 
   public disconnect() {
