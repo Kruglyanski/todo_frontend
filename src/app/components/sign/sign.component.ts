@@ -5,6 +5,7 @@ import { ModalService } from '../../services/modal.service';
 import { BaseComponent } from '../base-component/base.component';
 import { ApiService } from '../../services/api.service';
 import { WebsocketService } from '../../services/websocket.service';
+import { EMessageType } from '../../enums/message-type';
 
 @Component({
   selector: 'app-sign',
@@ -35,18 +36,18 @@ export class SignComponent extends BaseComponent {
     if (this.form.valid) {
       switch (this.type) {
         case 'register': {
-          this.apiService.register(this.form.value as IUserDto);
+          this.apiService.registerGQL(this.form.value as IUserDto);
           break;
         }
         case 'login': {
-          this.apiService.login(this.form.value as IUserDto);
+          this.apiService.loginGQL(this.form.value as IUserDto);
           break;
         }
       }
 
       this.modalService.hide();
       this.isSubmitClicked = false;
-      this.wss.emit('userSign', { value: 'in' });
+      this.wss.emit('chatMessage', { type: EMessageType.SIGN_IN });
     }
   }
 

@@ -7,7 +7,7 @@ import { ApiService } from './api.service';
 import { IUpdateTodoDto } from '../models/dto/update-todo.dto';
 import { ICreateTodoDto } from '../models/dto/create-todo.dto';
 import { WebsocketService } from './websocket.service';
-import { EUserEvents } from '../enums/user-events';
+import { EMessageType } from '../enums/message-type';
 
 @Injectable({
   providedIn: 'root',
@@ -73,9 +73,10 @@ export class TodosService {
         return category;
       });
       this.categoriesService.categories$.next(updatedCategories);
-      this.wss.emit('userEvent', {
-        userEvent: EUserEvents.CREATE_TODO,
-        entityTitle: todo.title,
+
+      this.wss.emit('chatMessage', {
+        type: EMessageType.CREATE_TODO,
+        entityTitle: [todo.title],
       });
     });
   }
@@ -97,9 +98,10 @@ export class TodosService {
           });
 
         this.categoriesService.categories$.next(updatedCategories);
-        this.wss.emit('userEvent', {
-          userEvent: EUserEvents.DELETE_TODO,
-          entityTitle: deletedTodo.title,
+
+        this.wss.emit('chatMessage', {
+          type: EMessageType.DELETE_TODO,
+          entityTitle: [deletedTodo.title],
         });
       });
   }
@@ -141,8 +143,9 @@ export class TodosService {
         this.categoriesService.categories$.next(newCategories);
 
         this.selectedTodos$.next([]);
-        this.wss.emit('userEvent', {
-          userEvent: EUserEvents.DELETE_TODO,
+
+        this.wss.emit('chatMessage', {
+          type: EMessageType.DELETE_TODO,
           entityTitle: deletedTodos.map((t) => t.title),
         });
       });

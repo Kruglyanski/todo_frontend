@@ -4,8 +4,8 @@ import { ICategory } from '../models/category';
 import { ICreateCategoryDto } from '../models/dto/create-category.dto';
 import { ApiService } from './api.service';
 import { ICategoriesQuery } from '../interfaces/queries';
-import { EUserEvents } from '../enums/user-events';
 import { WebsocketService } from './websocket.service';
+import { EMessageType } from '../enums/message-type';
 
 @Injectable({
   providedIn: 'root',
@@ -34,9 +34,9 @@ export class CategoriesService {
         const category = resp.data.createCategory;
         const updatedCategories = [...this.categories$.getValue(), category];
         this.categories$.next(updatedCategories);
-        this.wss.emit('userEvent', {
-          userEvent: EUserEvents.CREATE_CATEGORY,
-          entityTitle: category.title,
+        this.wss.emit('chatMessage', {
+          type: EMessageType.CREATE_CATEGORY,
+          entityTitle: [category.title],
         });
       });
   }
@@ -51,9 +51,10 @@ export class CategoriesService {
           .getValue()
           .filter((cat) => cat.id !== category.id);
         this.categories$.next(updatedCategories);
-        this.wss.emit('userEvent', {
-          userEvent: EUserEvents.DELETE_CATEGORY,
-          entityTitle: category.title,
+
+        this.wss.emit('chatMessage', {
+          type: EMessageType.DELETE_CATEGORY,
+          entityTitle: [category.title],
         });
       });
   }

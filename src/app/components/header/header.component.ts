@@ -18,6 +18,7 @@ import {
 } from 'rxjs';
 import { WebsocketService } from '../../services/websocket.service';
 import { CategoriesService } from '../../services/categories.service';
+import { EMessageType } from '../../enums/message-type';
 
 @Component({
   selector: 'app-header',
@@ -66,9 +67,9 @@ export class HeaderComponent extends BaseComponent {
   }
 
   public logout() {
-    this.wss.emit('userSign', { value: 'out' });
-    this.wss.disconnect();
+    this.wss.emit('chatMessage', { type: EMessageType.SIGN_OUT });
     this.apiService.token$.next('');
-    localStorage.removeItem('token');
+    this.apiService.email$.next('');
+    localStorage.clear();
   }
 }

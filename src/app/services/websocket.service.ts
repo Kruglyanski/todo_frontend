@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, distinctUntilChanged } from 'rxjs';
 import { io, Socket } from 'socket.io-client';
 import { IEmitEvents, IOnEvents } from '../interfaces/events';
+import { ApiService } from './api.service';
 
 @Injectable({
   providedIn: 'root',
@@ -9,18 +10,18 @@ import { IEmitEvents, IOnEvents } from '../interfaces/events';
 export class WebsocketService {
   private socket: Socket = io('http://localhost:5000', { auth: { token: '' } });
 
-  public connected$ = new BehaviorSubject(false);
-
-  public connect() {
-    (this.socket.io.opts as any).auth.token = `Bearer ${localStorage.getItem(
-      'token'
-    )}`;
+  constructor(private apiService: ApiService) {
+    apiService.token$.pipe(distinctUntilChanged()).subscribe((token) => {
+      !!token ? this.connect(token) : this.disconnect();
+    });
+  }
+  public connect(token: string) {
+    (this.socket.io.opts as any).auth.token = `Bearer ${token}`;
 
     this.socket.connect();
 
-    console.log('WebsocketService connect');
     this.socket.on('connect', () => {
-      this.connected$.next(true);
+      console.log('WebsocketService connect');
     });
 
     this.socket.on('connect_error', (error) => {
@@ -28,18 +29,14 @@ export class WebsocketService {
     });
 
     this.socket.on('disconnect', () => {
-      this.connected$.next(false);
       console.log('WebsocketService disconnect');
     });
 
-    return this.connected$;
   }
 
   public disconnect() {
     this.socket.disconnect();
     this.socket.close();
-
-    return this.connected$;
   }
 
   public on$<E extends keyof IOnEvents>(event: E) {

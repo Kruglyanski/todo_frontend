@@ -1,14 +1,17 @@
-import { EUserEvents } from '../enums/user-events';
+import { EMessageType } from '../enums/message-type';
+import { IMessage } from '../models/message';
 
 export interface IOnEvents {
-  chatMessage: { message: string; userEmail: string };
-  userSign: { value: 'in' | 'out'; userEmail: string };
-  userEvent: { userEvent: EUserEvents; entityTitle: string; userEmail: string };
-  clientConnected: any
+  chatMessage: IMessage;
+  deleteMessage: number;
+  clientConnected: IMessage[];
 }
 
 export interface IEmitEvents {
-  chatMessage: string;
-  userSign: { value: 'in' | 'out' };
-  userEvent: { userEvent: EUserEvents; entityTitle: string | string[] };
+  chatMessage: {
+    message?: string;
+    type: EMessageType;
+    entityTitle?: string[];
+  };
+  deleteMessage: number;
 }

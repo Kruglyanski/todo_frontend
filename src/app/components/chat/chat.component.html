@@ -1,7 +1,18 @@
 <div class="chat">
   <ul class="chat__messages">
-    <li class="chat__message" *ngFor="let msg of receivedMessages$ | async">
-      <div [ngClass]="msg.color">{{ msg.message }}</div>
+    <li class="chat__message" *ngFor="let msg of messages$ | async">
+      <div [ngClass]="msg.type">{{ msg.userEmail + ": " + msg.message }}</div>
+      <div
+        *ngIf="
+          msg.type == 'chatMessage' &&
+          msg.userEmail === (apiService.email$ | async)
+        "
+        class="chat__deleteButton"
+      >
+        <mat-icon class="chat__deleteButton" (click)="deleteMessage(msg.id)"
+          >delete_sweep</mat-icon
+        >
+      </div>
     </li>
   </ul>
   <div class="chat__inputWrapper">

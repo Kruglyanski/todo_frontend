@@ -1,3 +1,5 @@
+$font-size: 10px;
+
 .chat {
   display: flex;
   position: absolute;
@@ -53,36 +55,49 @@
     padding: 0px;
     padding-right: 4px;
     padding-left: 4px;
-    font-size: 10px;
-    margin-top: 2px;
-    line-height: 10px;
+    font-size: $font-size;
+    margin-top: 6px;
+    line-height: $font-size;
+    flex-direction: row;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  &__deleteButton {
+    color: rgb(232, 45, 28);
+    font-size: $font-size;
+    padding: 0;
+    height: $font-size;
+    width: $font-size;
+    &:hover {
+      cursor: pointer;
+    }
   }
 }
 
-.green {
-  color: green;
-}
-
-.skyblue {
-  color: rgb(2, 221, 245);
-}
-
-.blue {
+.chatMessage {
   color: blue;
 }
 
-.orange {
+.createTodo {
+  color: green;
+}
+
+.createCategory {
+  color: rgb(2, 221, 245);
+}
+
+.deleteTodo {
   color: orangered;
 }
 
-.violet {
+.deleteCategory {
+  color: rgb(180, 9, 57);
+}
+.signIn {
   color: rgb(83, 12, 206);
 }
 
-.brown {
+.signOut {
   color: rgb(185, 135, 8);
-}
-
-.red {
-  color: rgb(180, 9, 57);
 }

@@ -37,6 +37,7 @@ const BASE_URL = 'http://localhost:5000';
 })
 export class ApiService {
   public token$ = new BehaviorSubject(localStorage.getItem('token') ?? '');
+  public email$ = new BehaviorSubject(localStorage.getItem('email') ?? '');
   constructor(private httpClient: HttpClient) {}
 
   //GraphQL:
@@ -56,12 +57,30 @@ export class ApiService {
     return this.fetchGQLData(categoriesQuery);
   }
 
-  public loginGQL(userDto: IUserDto): Observable<ILoginQuery> {
-    return this.fetchGQLData(loginMutation, { ...userDto });
+  public loginGQL(userDto: IUserDto): Subscription {
+    return this.fetchGQLData<ILoginQuery>(loginMutation, {
+      ...userDto,
+    }).subscribe(({ data }) => {
+      const token = data.login.token;
+      const { email } = userDto;
+      this.token$.next(token);
+      this.email$.next(userDto.email);
+      localStorage.setItem('token', token);
+      localStorage.setItem('email', email);
+    });
   }
 
-  public registerGQL(userDto: IUserDto): Observable<IRegisterQuery> {
-    return this.fetchGQLData(registerMutation, { ...userDto });
+  public registerGQL(userDto: IUserDto): Subscription {
+    return this.fetchGQLData<IRegisterQuery>(registerMutation, { ...userDto })
+      .pipe(take(1))
+      .subscribe(({ data }) => {
+        const token = data.registration.token;
+        const { email } = userDto;
+        this.token$.next(token);
+        this.email$.next(userDto.email);
+        localStorage.setItem('token', token);
+        localStorage.setItem('email', email);
+      });
   }
 
   public createCategoryGQL(

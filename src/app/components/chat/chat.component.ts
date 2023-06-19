@@ -1,8 +1,10 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { WebsocketService } from '../../services/websocket.service';
-import { BehaviorSubject } from 'rxjs';
-import { EUserEvents } from '../../enums/user-events';
-import { EMessageColors } from '../../enums/message-colors';
+import { BehaviorSubject, takeUntil } from 'rxjs';
+import { EMessageType } from '../../enums/message-type';
+import { IMessage } from '../../models/message';
+import { ApiService } from '../../services/api.service';
+import { BaseComponent } from '../base-component/base.component';
 
 @Component({
   selector: 'app-chat',
@@ -10,81 +12,56 @@ import { EMessageColors } from '../../enums/message-colors';
   styleUrls: ['./chat.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ChatComponent {
+export class ChatComponent extends BaseComponent {
   public message: string;
-  public receivedMessages$ = new BehaviorSubject<
-    { message: string; color: EMessageColors }[]
-  >([]);
+  public messages$ = new BehaviorSubject<IMessage[]>([]);
 
-  constructor(public websocketService: WebsocketService) {
-    websocketService.connect();
-
-    websocketService.on$('clientConnected').subscribe((data) => {
-     
-      console.log('asd on$ clientConnected', data);
-    });
-
-    websocketService.on$('chatMessage').subscribe((data) => {
-      const message = `User "${data.userEmail}": msg: ${data.message}`;
-
-      this.receivedMessages$.next([
-        { message, color: EMessageColors.BLUE },
-        ...this.receivedMessages$.value,
-      ]);
-      console.log('asd on$ chatMessage', data);
-    });
-
-    websocketService.on$('userSign').subscribe((data) => {
-      const message = `User "${
-        data.userEmail
-      }": sign ${data.value.toUpperCase()}`;
-      const color =
-        data.value === 'in' ? EMessageColors.VIOLET : EMessageColors.BROWN;
-
-      this.receivedMessages$.next([
-        { message, color },
-        ...this.receivedMessages$.value,
-      ]);
-      console.log('asd on$ userSign', data);
-    });
+  constructor(
+    public websocketService: WebsocketService,
+    public apiService: ApiService
+  ) {
+    super(ChatComponent.name);
 
     websocketService
-      .on$('userEvent')
-      .subscribe(({ userEmail, userEvent, entityTitle }) => {
-        let message: string;
-        if (Array.isArray(entityTitle) && entityTitle.length > 1) {
-          message = `User "${userEmail}": ${userEvent.toLowerCase()}s: ${entityTitle.join(
-            ' , '
-          )}`;
-        } else {
-          message = `User "${userEmail}": ${userEvent.toLowerCase()} ${entityTitle}`;
-        }
+      .on$('clientConnected')
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((data) => {
+        console.log('on$ clientConnected', data);
+        this.messages$.next(data.sort((a, b) => b.id - a.id));
+      });
 
-        const getColor = () => {
-          switch (userEvent) {
-            case EUserEvents.CREATE_CATEGORY:
-              return EMessageColors.SKYBLUE;
-            case EUserEvents.CREATE_TODO:
-              return EMessageColors.GREEN;
-            case EUserEvents.DELETE_CATEGORY:
-              return EMessageColors.ORANGE;
-            case EUserEvents.DELETE_TODO:
-              return EMessageColors.RED;
-            default:
-              return EMessageColors.BLUE;
-          }
-        };
+    websocketService
+      .on$('chatMessage')
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((data) => {
+        this.messages$.next(
+          [data, ...this.messages$.value].sort((a, b) => b.id - a.id)
+        );
+        console.log('on$ chatMessage', data);
+      });
 
-        this.receivedMessages$.next([
-          { message, color: getColor() },
-          ...this.receivedMessages$.value,
-        ]);
-        console.log('asd on$ userEvent', { userEmail, userEvent, entityTitle });
+    websocketService
+      .on$('deleteMessage')
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((msgId) => {
+        this.messages$.next(
+          this.messages$.value.filter((msg) => msg.id !== msgId)
+        );
+        console.log('on$ deleteMessage', msgId);
       });
   }
 
   public sendMessage() {
-    this.websocketService.emit('chatMessage', this.message);
+    this.websocketService.emit('chatMessage', {
+      message: this.message,
+      type: EMessageType.MESSAGE,
+    });
+    console.log('emit sendMessage', this.message);
     this.message = '';
+  }
+
+  public deleteMessage(msgId: number) {
+    this.websocketService.emit('deleteMessage', msgId);
+    console.log('emit deleteMessage', msgId);
   }
 }
