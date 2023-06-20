@@ -54,8 +54,8 @@ export type DeleteCategoryMutation = {
 };
 
 export type UpdateTodoMutationVariables = Types.Exact<{
-  todoId?: Types.InputMaybe<Types.Scalars['Float']['input']>;
-  updateTodoInput?: Types.InputMaybe<Types.UpdateTodoInput>;
+  todoId: Types.Scalars['Float']['input'];
+  updateTodoInput: Types.UpdateTodoInput;
 }>;
 
 export type UpdateTodoMutation = {

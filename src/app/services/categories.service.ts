@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Subscription, take } from 'rxjs';
+import { BehaviorSubject, Subscription } from 'rxjs';
 import { ICategory } from '../models/category';
 import { ICreateCategoryDto } from '../models/dto/create-category.dto';
 import { ApiService } from './api.service';

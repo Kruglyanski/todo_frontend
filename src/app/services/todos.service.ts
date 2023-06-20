@@ -55,16 +55,17 @@ export class TodosService {
           updateTodoInput: updateTodoDto,
         }
       )
-      .subscribe(({ updateTodo }) => {
+      .subscribe((data) => {
+        const todo = data.updateTodo;
         const updatedCategories = this.categoriesService.categories$
           .getValue()
           .map((cat) => {
-            if (cat.id === updateTodo.categoryId) {
+            if (cat.id === todo.categoryId) {
               const newCat = { ...cat };
-              const index = cat.todos.findIndex((t) => t.id === updateTodo.id);
+              const index = cat.todos.findIndex((t) => t.id === todo.id);
 
               if (index !== -1) {
-                newCat.todos.splice(index, 1, updateTodo);
+                newCat.todos.splice(index, 1, todo);
               }
 
               return newCat;

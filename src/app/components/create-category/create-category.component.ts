@@ -27,6 +27,7 @@ export class CreateCategoryComponent extends BaseComponent {
 
   public onSubmit() {
     this.isSubmitClicked = true;
+
     if (this.form.valid) {
       this.categoriesService.createGQL(this.form.value as ICreateCategoryDto);
       this.modalService.hide();

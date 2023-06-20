@@ -20,7 +20,7 @@ export class CreateTodoComponent extends BaseComponent {
     title: new FormControl<string>('', [Validators.required]),
     description: new FormControl<string>(''),
     categoryId: new FormControl<number | null>(
-      this.categoriesService.categories$.getValue()[0]?.id
+      this.categoriesService.categories$.value[0]?.id
     ),
     tag: new FormControl<ETag>(ETag.LOW),
   });

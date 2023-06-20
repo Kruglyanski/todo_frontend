@@ -34,7 +34,7 @@ export class CategoryComponent extends BaseComponent {
     category && this.categoriesService.deleteGQL(category.id);
   }
 
-  public openCategory() {
+  public toggleCategory() {
     this.isOpen = !this.isOpen;
   }
 }

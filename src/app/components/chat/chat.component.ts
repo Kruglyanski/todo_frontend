@@ -81,13 +81,16 @@ export class ChatComponent extends BaseComponent {
         message: this.message,
         id: this.editingMessageId,
       });
-      console.log('emit editMessage', this.message);
+
       this.editingMessageId = null;
+
+      console.log('emit editMessage', this.message);
     } else {
       this.websocketService.emit('chatMessage', {
         message: this.message,
         type: EMessageType.MESSAGE,
       });
+
       console.log('emit sendMessage', this.message);
     }
 
@@ -98,11 +101,13 @@ export class ChatComponent extends BaseComponent {
     this.editingMessageId = msg.id;
     this.message = msg.message;
     this.input.nativeElement.focus();
+
     console.log('editMessage', msg);
   }
 
   public deleteMessage(msgId: number) {
     this.websocketService.emit('deleteMessage', msgId);
+
     console.log('emit deleteMessage', msgId);
   }
 }

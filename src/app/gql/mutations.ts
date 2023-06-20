@@ -68,10 +68,7 @@ export const deleteCategoryMutation = gql`
 `;
 
 export const updateTodoMutation = gql`
-  mutation updateTodo(
-    $todoId: Float = 2
-    $updateTodoInput: UpdateTodoInput = { completed: true }
-  ) {
+  mutation updateTodo($todoId: Float!, $updateTodoInput: UpdateTodoInput!) {
     updateTodo(todoId: $todoId, updateTodoInput: $updateTodoInput) {
       completed
       description

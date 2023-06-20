@@ -68,8 +68,10 @@ export class HeaderComponent extends BaseComponent {
 
   public logout() {
     this.wss.emit('chatMessage', { type: EMessageType.SIGN_OUT });
+
     this.apiService.token$.next('');
     this.apiService.email$.next('');
+
     localStorage.clear();
   }
 }

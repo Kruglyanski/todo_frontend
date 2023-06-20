@@ -16,7 +16,3 @@ export const categoriesQuery = gql`
     }
   }
 `;
-// category {
-//           id
-//           title
-//         }

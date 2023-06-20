@@ -39,7 +39,6 @@
     border-radius: 4px;
     background-color: rgb(123, 5, 5);
     border: 1px solid rgb(64, 80, 77);
-    padding: 4px;
     font-size: 14px;
     padding-left: 8px;
     padding-right: 8px;
@@ -47,11 +46,17 @@
     margin-left: 4px;
     margin-right: 4px;
     display: flex;
+    height: 26px;
+  }
+
+  &__deleteIcon {
+    font-size: 18px;
+    padding-top: 1px;
   }
 
   &__deleteButton p {
     margin: 0;
-    margin-top: 4px;
+    margin-top: 3px;
   }
 
   &__hidden {

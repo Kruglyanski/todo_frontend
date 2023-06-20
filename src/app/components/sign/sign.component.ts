@@ -16,8 +16,8 @@ import { EMessageType } from '../../enums/message-type';
 export class SignComponent extends BaseComponent {
   public isSubmitClicked = false;
   public form = new FormGroup({
-    email: new FormControl<string>('', [Validators.required]),
-    password: new FormControl<string>(''),
+    email: new FormControl<string>('', [Validators.required, Validators.email]),
+    password: new FormControl<string>('', [Validators.required]),
   });
 
   @Input() type: 'register' | 'login';
@@ -47,6 +47,7 @@ export class SignComponent extends BaseComponent {
 
       this.modalService.hide();
       this.isSubmitClicked = false;
+
       this.wss.emit('chatMessage', { type: EMessageType.SIGN_IN });
     }
   }
@@ -56,6 +57,6 @@ export class SignComponent extends BaseComponent {
   }
 
   public get password() {
-    return this.form.controls.email as FormControl;
+    return this.form.controls.password as FormControl;
   }
 }

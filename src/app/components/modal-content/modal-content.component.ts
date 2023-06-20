@@ -6,7 +6,6 @@ import { BaseComponent } from '../base-component/base.component';
 @Component({
   selector: 'app-modal-content',
   templateUrl: './modal-content.component.html',
-  styleUrls: ['./modal-content.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ModalContentComponent extends BaseComponent {

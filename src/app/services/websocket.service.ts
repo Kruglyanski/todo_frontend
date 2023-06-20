@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, distinctUntilChanged } from 'rxjs';
+import { Observable } from 'rxjs';
 import { io, Socket } from 'socket.io-client';
 import { IEmitEvents, IOnEvents } from '../interfaces/events';
 import { ApiService } from './api.service';
@@ -11,7 +11,7 @@ export class WebsocketService {
   private socket: Socket = io('http://localhost:5000', { auth: { token: '' } });
 
   constructor(private apiService: ApiService) {
-    apiService.token$.pipe(distinctUntilChanged()).subscribe((token) => {
+    apiService.token$.subscribe((token) => {
       !!token ? this.connect(token) : this.disconnect();
     });
   }
@@ -39,9 +39,9 @@ export class WebsocketService {
     this.socket.close();
   }
 
-  public on$<E extends keyof IOnEvents>(event: E) {
-    return new Observable<IOnEvents[E]>((observer) => {
-      const callBack = (data: IOnEvents[E]) => observer.next(data);
+  public on$<T extends keyof IOnEvents>(event: T) {
+    return new Observable<IOnEvents[T]>((observer) => {
+      const callBack = (data: IOnEvents[T]) => observer.next(data);
       this.socket.on(event, callBack as any);
 
       return () => this.socket.off(event, callBack as any);

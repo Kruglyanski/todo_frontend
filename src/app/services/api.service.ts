@@ -17,8 +17,9 @@ const BASE_URL = 'http://localhost:5000';
   providedIn: 'root',
 })
 export class ApiService {
-  public token$ = new BehaviorSubject(localStorage.getItem('token') ?? '');
-  public email$ = new BehaviorSubject(localStorage.getItem('email') ?? '');
+  public token$ = new BehaviorSubject(localStorage.getItem('token'));
+  public email$ = new BehaviorSubject(localStorage.getItem('email'));
+
   constructor(private httpClient: HttpClient) {}
 
   private setAuthData(token: string, email: string) {

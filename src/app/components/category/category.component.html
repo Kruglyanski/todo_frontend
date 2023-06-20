@@ -4,7 +4,7 @@
       <div
         *ngIf="category.todos.length"
         class="category__open"
-        (click)="openCategory()"
+        (click)="toggleCategory()"
       >
         <ng-container [ngSwitch]="isOpen">
           <ng-container *ngSwitchCase="true">
@@ -18,7 +18,7 @@
       <h2 class="category__title">{{ category.title }}</h2>
     </div>
     <button class="category__deleteButton" (click)="deleteCategory()">
-      <mat-icon fontSize="small">delete_sweep</mat-icon>
+      <mat-icon class="category__deleteIcon">delete_sweep</mat-icon>
       <p>Category</p>
     </button>
   </div>

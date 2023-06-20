@@ -1,5 +1,4 @@
 import {
-  Component,
   Inject,
   Injectable,
   OnChanges,
@@ -11,6 +10,7 @@ import { Subject } from 'rxjs';
 @Injectable()
 export class BaseComponent implements OnDestroy, OnChanges {
   public destroy$ = new Subject<void>();
+
   constructor(@Inject('name') private name: string) {}
 
   ngOnChanges(changes: SimpleChanges): void {

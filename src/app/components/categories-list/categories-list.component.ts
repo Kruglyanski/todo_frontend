@@ -13,7 +13,6 @@ import { ApiService } from '../../services/api.service';
 @Component({
   selector: 'app-categories-list',
   templateUrl: './categories-list.component.html',
-  styleUrls: ['./categories-list.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CategoriesListComponent extends BaseComponent implements OnInit {
@@ -28,6 +27,7 @@ export class CategoriesListComponent extends BaseComponent implements OnInit {
         if (!value) {
           return category;
         }
+
         const todos = category.todos.filter((t) =>
           t.title.toLowerCase().includes(value.toLowerCase())
         );

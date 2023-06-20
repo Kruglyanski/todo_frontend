@@ -8,7 +8,7 @@
     />
     <div
       class="form__email_error"
-      *ngIf="!email.value && (email.touched || email.dirty || isSubmitClicked)"
+      *ngIf="!email.valid && (email.touched || email.dirty || isSubmitClicked)"
     >
       Email is required!!!
     </div>
@@ -23,7 +23,7 @@
     <div
       class="form__password_error"
       *ngIf="
-        !password.value &&
+        !password.valid &&
         (password.touched || password.dirty || isSubmitClicked)
       "
     >

@@ -17,7 +17,6 @@ import { HeaderComponent } from './components/header/header.component';
 import { ModalContentComponent } from './components/modal-content/modal-content.component';
 import { CategoriesListComponent } from './components/categories-list/categories-list.component';
 import { AuthComponent } from './components/auth/auth.component';
-import { GraphQLModule } from './graphql.module';
 import { ChatComponent } from './components/chat/chat.component';
 
 @NgModule({
@@ -43,7 +42,6 @@ import { ChatComponent } from './components/chat/chat.component';
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
-    GraphQLModule,
     MatIconModule,
   ],
   providers: [],
