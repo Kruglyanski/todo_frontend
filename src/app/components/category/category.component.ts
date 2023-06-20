@@ -4,6 +4,8 @@ import { ICategory } from '../../models/category';
 import { CategoriesService } from '../../services/categories.service';
 import { BaseComponent } from '../base-component/base.component';
 import { BehaviorSubject, Subject } from 'rxjs';
+import { Category } from '../../gql/global-types';
+import { CategoriesQuery } from '../../gql/queries-generated-types';
 
 @Component({
   selector: 'app-category',

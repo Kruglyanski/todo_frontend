@@ -1,0 +1,41 @@
+schema: 'http://localhost:5000/graphql'
+generates:
+  ./src/app/gql/global-types.ts:
+    config:
+      dedupeFragments: true
+      avoidOptionals: true
+      declarationKind: 'interface'
+      skipTypename: false
+      namingConvention:
+        typeNames: change-case-all#pascalCase
+        enumValues: change-case-all#upperCase
+      scalars:
+        DateTime: string
+        Datetime: string
+        Json: string
+        BigInt: number
+        Upload: '{ filename: string; mimetype: string; encoding: string }'
+    plugins:
+      - add:
+          content: '/* eslint-disable */'
+      - typescript
+    hooks:
+      afterOneFileWrite:
+        - eslint --fix
+  ./src/app/gql/:
+    documents: ['./src/app/../**/*{.ts,.js}']
+    preset: near-operation-file
+    presetConfig:
+      extension: -generated-types.ts
+      baseTypesPath: './global-types'
+    config:
+      declarationKind: 'interface'
+      skipTypename: true
+      avoidOptionals: true
+      # onlyOperationTypes: true
+      preResolveTypes: false
+    plugins:
+      - typescript-operations
+    hooks:
+      afterOneFileWrite:
+        - eslint --fix

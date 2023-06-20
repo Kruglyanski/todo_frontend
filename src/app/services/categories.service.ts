@@ -3,9 +3,23 @@ import { BehaviorSubject, Subscription, take } from 'rxjs';
 import { ICategory } from '../models/category';
 import { ICreateCategoryDto } from '../models/dto/create-category.dto';
 import { ApiService } from './api.service';
-import { ICategoriesQuery } from '../interfaces/queries';
 import { WebsocketService } from './websocket.service';
 import { EMessageType } from '../enums/message-type';
+import {
+  CategoriesQuery,
+  CategoriesQueryVariables,
+} from '../gql/queries-generated-types';
+import { categoriesQuery } from '../gql/queries';
+import {
+  CreateCategoryMutation,
+  CreateCategoryMutationVariables,
+  DeleteCategoryMutation,
+  DeleteCategoryMutationVariables,
+} from '../gql/mutations-generated-types';
+import {
+  createCategoryMutation,
+  deleteCategoryMutation,
+} from '../gql/mutations';
 
 @Injectable({
   providedIn: 'root',
@@ -17,23 +31,26 @@ export class CategoriesService {
 
   //GraphQL:
 
-  public getAllGQL(): Subscription {
+  public getAllGQL() {
     return this.apiService
-      .getAllCategoriesGQL()
-      .pipe(take(1))
-      .subscribe((data: ICategoriesQuery) => {
-        this.categories$.next(data.data.categories);
+      .gqlRequest<CategoriesQuery, CategoriesQueryVariables>(categoriesQuery)
+      .subscribe(({ categories }) => {
+        return this.categories$.next(categories);
       });
   }
 
   public createGQL(categoryDto: ICreateCategoryDto): Subscription {
     return this.apiService
-      .createCategoryGQL(categoryDto)
-      .pipe(take(1))
+      .gqlRequest<CreateCategoryMutation, CreateCategoryMutationVariables>(
+        createCategoryMutation,
+        categoryDto
+      )
       .subscribe((resp) => {
-        const category = resp.data.createCategory;
+        const category = resp.createCategory;
         const updatedCategories = [...this.categories$.getValue(), category];
+
         this.categories$.next(updatedCategories);
+
         this.wss.emit('chatMessage', {
           type: EMessageType.CREATE_CATEGORY,
           entityTitle: [category.title],
@@ -43,13 +60,16 @@ export class CategoriesService {
 
   public deleteGQL(categoryId: ICategory['id']): Subscription {
     return this.apiService
-      .deleteCategoryGQL(categoryId)
-      .pipe(take(1))
-      .subscribe((resp) => {
-        const category = resp.data.deleteCategory;
+      .gqlRequest<DeleteCategoryMutation, DeleteCategoryMutationVariables>(
+        deleteCategoryMutation,
+        { categoryId }
+      )
+      .subscribe((data) => {
+        const category = data.deleteCategory;
         const updatedCategories = this.categories$
           .getValue()
           .filter((cat) => cat.id !== category.id);
+
         this.categories$.next(updatedCategories);
 
         this.wss.emit('chatMessage', {
@@ -61,34 +81,34 @@ export class CategoriesService {
 
   //REST:
 
-  public getAll(): Subscription {
-    return this.apiService
-      .getAllCategories()
-      .pipe(take(1))
-      .subscribe((categories) => {
-        this.categories$.next(categories);
-      });
-  }
+  // public getAll(): any {
+  //   return this.apiService
+  //     .getAllCategories()
+  //     .pipe(take(1))
+  //     .subscribe((categories) => {
+  //       this.categories$.next(categories);
+  //     });
+  // }
 
-  public create(categoryDto: ICreateCategoryDto): Subscription {
-    return this.apiService
-      .createCategory(categoryDto)
-      .pipe(take(1))
-      .subscribe((category) => {
-        const updatedCategories = [...this.categories$.getValue(), category];
-        this.categories$.next(updatedCategories);
-      });
-  }
+  // public create(categoryDto: ICreateCategoryDto): any {
+  //   return this.apiService
+  //     .createCategory(categoryDto)
+  //     .pipe(take(1))
+  //     .subscribe((category) => {
+  //       const updatedCategories = [...this.categories$.getValue(), category];
+  //       this.categories$.next(updatedCategories);
+  //     });
+  // }
 
-  public delete(categoryId: ICategory['id']): Subscription {
-    return this.apiService
-      .deleteCategory(categoryId)
-      .pipe(take(1))
-      .subscribe((category) => {
-        const updatedCategories = this.categories$
-          .getValue()
-          .filter((cat) => cat.id !== category.id);
-        this.categories$.next(updatedCategories);
-      });
-  }
+  // public delete(categoryId: ICategory['id']): Subscription {
+  //   return this.apiService
+  //     .deleteCategory(categoryId)
+  //     .pipe(take(1))
+  //     .subscribe((category) => {
+  //       const updatedCategories = this.categories$
+  //         .getValue()
+  //         .filter((cat) => cat.id !== category.id);
+  //       this.categories$.next(updatedCategories);
+  //     });
+  // }
 }

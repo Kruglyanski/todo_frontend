@@ -1,7 +1,7 @@
 import gql from 'graphql-tag';
 
 export const categoriesQuery = gql`
-  query categoriesQuery {
+  query categories {
     categories {
       todos {
         completed
@@ -9,10 +9,6 @@ export const categoriesQuery = gql`
         id
         tag
         title
-        category {
-          id
-          title
-        }
         categoryId
       }
       title
@@ -20,3 +16,7 @@ export const categoriesQuery = gql`
     }
   }
 `;
+// category {
+//           id
+//           title
+//         }

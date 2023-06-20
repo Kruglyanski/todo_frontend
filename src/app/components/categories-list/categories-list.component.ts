@@ -48,8 +48,8 @@ export class CategoriesListComponent extends BaseComponent implements OnInit {
     super(CategoriesListComponent.name);
   }
 
-  public trackByFn(_: number, item: ICategory): ICategory['id'] {
-    return item?.id;
+  public trackByFn(_: number, item: ICategory) {
+    return item.id;
   }
 
   ngOnInit() {

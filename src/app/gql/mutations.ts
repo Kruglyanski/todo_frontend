@@ -27,6 +27,7 @@ export const createCategoryMutation = gql`
         id
         tag
         title
+        categoryId
       }
     }
   }
@@ -47,15 +48,12 @@ export const createTodoMutation = gql`
         tag: $tag
       }
     ) {
-      category {
-        id
-        title
-      }
       completed
       description
       id
       tag
       title
+      categoryId
     }
   }
 `;
@@ -86,7 +84,7 @@ export const updateTodoMutation = gql`
 `;
 
 export const deleteTodosMutation = gql`
-  mutation MyMutation($todoIds: String!) {
+  mutation deleteTodo($todoIds: String!) {
     deleteTodo(todoIds: $todoIds) {
       id
       categoryId
