@@ -101,8 +101,6 @@ export class ChatComponent extends BaseComponent {
     this.editingMessageId = msg.id;
     this.message = msg.message;
     this.input.nativeElement.focus();
-
-    console.log('editMessage', msg);
   }
 
   public deleteMessage(msgId: number) {

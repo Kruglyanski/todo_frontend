@@ -1,7 +1,9 @@
 <div class="chat">
   <ul class="chat__messages">
     <li class="chat__message" *ngFor="let msg of messages$ | async">
-      <div [ngClass]="msg.type">{{ msg.userEmail + ": " + msg.message }}</div>
+      <div [ngClass]="msg.type" class="chat__message--text">
+        {{ msg.userEmail + ": " + msg.message }}
+      </div>
       <div
         *ngIf="
           msg.type == 'chatMessage' &&

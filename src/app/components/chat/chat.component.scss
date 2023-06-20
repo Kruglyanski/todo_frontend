@@ -22,6 +22,7 @@ $font-size: 10px;
     border: 1px solid rgb(86, 110, 174);
     border-radius: 4px;
     font-size: 14px;
+
     &:focus {
       outline: none;
       border: 1px solid rgb(4, 62, 98);
@@ -63,11 +64,17 @@ $font-size: 10px;
     justify-content: space-between;
   }
 
+  &__message--text {
+    width: 140px;
+    overflow: hidden;
+  }
+
   &__messageButton {
     font-size: $font-size;
     padding: 0;
     height: $font-size;
     width: $font-size;
+
     &:hover {
       cursor: pointer;
     }
