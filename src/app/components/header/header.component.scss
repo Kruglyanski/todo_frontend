@@ -36,7 +36,7 @@
     margin-right: 4px;
   }
 
-  &__removeTodosButton {
+  &__remove-todos-button {
     background-color: rgb(123, 5, 5);
     display: flex;
     padding: 0;
@@ -46,11 +46,11 @@
     height: 26px;
   }
 
-  &__removeTodosButton p {
+  &__remove-todos-button p {
     margin: 0;
   }
 
-  &__removeTodosButton--icon {
+  &__remove-todos-button-icon {
     font-size: 18px;
     padding-top: 4px;
   }

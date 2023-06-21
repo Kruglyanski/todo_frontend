@@ -10,7 +10,7 @@
     font-size: 12px;
   }
 
-  &__titleContainer {
+  &__title-container {
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -22,7 +22,7 @@
     margin: 0;
   }
 
-  &__lineTrought {
+  &__line__through {
     color: rgb(112, 126, 135);
     text-decoration: line-through;
   }
@@ -40,7 +40,7 @@
     margin-right: 4px;
   }
 
-  &__deleteButton {
+  &__delete-button {
     background-color: rgb(123, 5, 5);
   }
 

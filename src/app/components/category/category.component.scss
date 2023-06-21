@@ -14,7 +14,7 @@
     margin-top: 12px;
   }
 
-  &__titleWrapper {
+  &__title-wrapper {
     display: flex;
     align-items: center;
   }
@@ -35,7 +35,7 @@
     justify-content: space-between;
   }
 
-  &__deleteButton {
+  &__delete-button {
     border-radius: 4px;
     background-color: rgb(123, 5, 5);
     border: 1px solid rgb(64, 80, 77);
@@ -49,12 +49,12 @@
     height: 26px;
   }
 
-  &__deleteIcon {
+  &__delete-icon {
     font-size: 18px;
     padding-top: 1px;
   }
 
-  &__deleteButton p {
+  &__delete-button p {
     margin: 0;
     margin-top: 3px;
   }

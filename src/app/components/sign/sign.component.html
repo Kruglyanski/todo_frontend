@@ -1,5 +1,5 @@
 <form class="form" [formGroup]="form" (ngSubmit)="onSubmit()">
-  <div class="form__inputWrapper">
+  <div class="form__input-wrapper">
     <input
       type="text"
       class="form__input"
@@ -7,13 +7,13 @@
       placeholder="Enter Email"
     />
     <div
-      class="form__email_error"
+      class="form__email-error"
       *ngIf="!email.valid && (email.touched || email.dirty || isSubmitClicked)"
     >
       Email is required!!!
     </div>
   </div>
-  <div class="form__inputWrapper">
+  <div class="form__input-wrapper">
     <input
       type="password"
       class="form__input"
@@ -21,7 +21,7 @@
       placeholder="Enter Password"
     />
     <div
-      class="form__password_error"
+      class="form__password-error"
       *ngIf="
         !password.valid &&
         (password.touched || password.dirty || isSubmitClicked)

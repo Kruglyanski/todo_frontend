@@ -1,7 +1,7 @@
 <div class="chat">
   <ul class="chat__messages">
     <li class="chat__message" *ngFor="let msg of messages$ | async">
-      <div [ngClass]="msg.type" class="chat__message--text">
+      <div [ngClass]="msg.type" class="chat__message-text">
         {{ msg.userEmail + ": " + msg.message }}
       </div>
       <div
@@ -9,22 +9,22 @@
           msg.type == 'chatMessage' &&
           msg.userEmail === (apiService.email$ | async)
         "
-        class="chat__buttonsContainer"
+        class="chat__buttons-container"
       >
         <mat-icon
-          class="chat__messageButton chat__editButton"
+          class="chat__message-button chat__edit-button"
           (click)="editMessage(msg)"
           >edit</mat-icon
         >
         <mat-icon
-          class="chat__messageButton chat__deleteButton"
+          class="chat__message-button chat__delete-button"
           (click)="deleteMessage(msg.id)"
           >delete_sweep</mat-icon
         >
       </div>
     </li>
   </ul>
-  <div class="chat__inputWrapper">
+  <div class="chat__input-wrapper">
     <input
       #input
       [(ngModel)]="message"

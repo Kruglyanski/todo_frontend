@@ -54,6 +54,7 @@ export interface CreateTodoInput {
 export interface CreateUserInput {
   email: Scalars['String']['input'];
   password: Scalars['String']['input'];
+  roleIds: InputMaybe<Array<Scalars['Int']['input']>>;
 }
 
 export interface Mutation {
@@ -110,7 +111,7 @@ export interface Todo {
   description: Maybe<Scalars['String']['output']>;
   id: Scalars['Float']['output'];
   tag: Maybe<Scalars['String']['output']>;
-  title: Scalars['String']['output'];
+  title: Maybe<Scalars['String']['output']>;
 }
 
 export interface UpdateTodoInput {

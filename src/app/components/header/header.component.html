@@ -7,10 +7,10 @@
   />
   <button
     *ngIf="showDeleteButton$ | async"
-    class="header__button header__removeTodosButton"
+    class="header__button header__remove-todos-button"
     (click)="deleteSelectedTodos()"
   >
-    <mat-icon class="header__removeTodosButton--icon">delete_sweep</mat-icon>
+    <mat-icon class="header__remove-todos-button-icon">delete_sweep</mat-icon>
     <p>Todos</p>
   </button>
   <div *ngIf="!(showDeleteButton$ | async)">

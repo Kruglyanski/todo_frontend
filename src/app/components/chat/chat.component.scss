@@ -11,7 +11,7 @@ $font-size: 10px;
   background-color: rgb(244, 244, 235);
   border-radius: 4px;
 
-  &__inputWrapper {
+  &__input-wrapper {
     display: flex;
     justify-content: space-between;
   }
@@ -64,12 +64,12 @@ $font-size: 10px;
     justify-content: space-between;
   }
 
-  &__message--text {
+  &__message-text {
     width: 140px;
     overflow: hidden;
   }
 
-  &__messageButton {
+  &__message-button {
     font-size: $font-size;
     padding: 0;
     height: $font-size;
@@ -80,12 +80,12 @@ $font-size: 10px;
     }
   }
 
-  &__deleteButton {
+  &__delete-button {
     color: rgb(232, 45, 28);
     margin-left: 10px;
   }
 
-  &__editButton {
+  &__edit-button {
     color: rgb(119, 191, 239);
   }
 }

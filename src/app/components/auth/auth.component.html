@@ -1,14 +1,14 @@
 <div class="auth" *ngIf="!(apiService.token$ | async)">
   <h1 class="auth__title">{{ title | titlecase }}</h1>
-  <div class="auth__buttonsWrapper">
+  <div class="auth__buttons-wrapper">
     <button
-      class="auth__registerButton"
+      class="auth__register-button"
       (click)="modalService.show(EModalType.REGISTER)"
     >
       Sign up
     </button>
     <button
-      class="auth__loginButton"
+      class="auth__login-button"
       (click)="modalService.show(EModalType.LOGIN)"
     >
       Sign in

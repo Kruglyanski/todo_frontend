@@ -1,9 +1,9 @@
 <div class="todo" *ngIf="todo$ | async as todo">
-  <div class="todo__titleContainer">
+  <div class="todo__title-container">
     <h2
       class="todo__title"
       [ngClass]="{
-        todo__lineTrought: (completed$ | async),
+        todo__line__through: (completed$ | async),
     }"
     >
       {{ todo.title }}
@@ -15,12 +15,12 @@
     <app-tag [tag]="todo.tag"></app-tag>
     <div>
       <button
-        class="todo__button todo__completeButton"
+        class="todo__button todo__complete-button"
         (click)="completeTodo()"
       >
         {{ (completed$ | async) ? "Incomplete" : "Complete" }}
       </button>
-      <button class="todo__button todo__deleteButton" (click)="deleteTodo()">
+      <button class="todo__button todo__delete-button" (click)="deleteTodo()">
         Delete
       </button>
     </div>

@@ -1,6 +1,6 @@
 <div *ngIf="category$ | async as category" class="category">
   <div class="category__header">
-    <div class="category__titleWrapper">
+    <div class="category__title-wrapper">
       <div
         *ngIf="category.todos.length"
         class="category__open"
@@ -17,8 +17,8 @@
       </div>
       <h2 class="category__title">{{ category.title }}</h2>
     </div>
-    <button class="category__deleteButton" (click)="deleteCategory()">
-      <mat-icon class="category__deleteIcon">delete_sweep</mat-icon>
+    <button class="category__delete-button" (click)="deleteCategory()">
+      <mat-icon class="category__delete-icon">delete_sweep</mat-icon>
       <p>Category</p>
     </button>
   </div>
